@@ -393,6 +393,7 @@
     <button class="btn btn-secondary" onclick="openAddLocation()">📍 Add Location</button>
     <button class="btn btn-secondary" onclick="printReport()">🖨️ Print PDF</button>
     <button class="btn btn-secondary" onclick="exportCSV()">📊 Export CSV</button>
+    <button class="btn btn-primary" onclick="shareData()">📤 Share / Export</button> <!-- added 2 Nov 2026 -->
     <button class="btn btn-secondary" onclick="backupData()">💾 Backup</button>
     <button class="btn btn-secondary" onclick="triggerRestore()">📂 Restore</button>
     <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreData(event)">
@@ -1202,7 +1203,28 @@ function exportCSV() {
   URL.revokeObjectURL(url);
   toast('CSV exported');
 }
-
+function shareData() {
+  const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
+  const mosqueName = mosque ? mosque.name : 'Mosque';
+  
+  const choice = confirm("Click OK to Export as PDF, or Cancel to Export as CSV.");
+  
+  if (choice) {
+    // If PDF (OK)
+    printReport(); 
+    setTimeout(() => {
+      const text = encodeURIComponent(`Latest inventory list for ${mosqueName}. Thank you.`);
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+    }, 1000);
+  } else {
+    // If CSV (Cancel)
+    exportCSV();
+    setTimeout(() => {
+      const text = encodeURIComponent(`Latest inventory list for ${mosqueName}. Thank you.`);
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+    }, 1000);
+  }
+}
 document.getElementById('searchInput').addEventListener('input', e => {
   state.search = e.target.value;
   render();
