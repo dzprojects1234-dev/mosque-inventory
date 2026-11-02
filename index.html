@@ -498,9 +498,8 @@
     </ol>
     <h4>Share / Export</h4>
     <ul>
-      <li><strong>Share / Export</strong> — Downloads a clean PDF or CSV with a unique timestamped filename (e.g., Masjid_AlKhair_Inventory_02112026_154500.pdf).</li>
-      <li>It will also automatically download a <strong>JSON Backup</strong> at the same time for safety.</li>
-      <li>You can upload these files to Google Drive, WhatsApp, or your mosque's website for the public to view.</li>
+      <li><strong>Share / Export</strong> — Downloads a PDF or CSV, <em>plus</em> a JSON Backup automatically. All files use a unique timestamped name.</li>
+      <li>Upload these files to Google Drive, WhatsApp, or your mosque's website for the public to view.</li>
     </ul>
     <h4>Backup (Important!)</h4>
     <ul>
@@ -526,10 +525,9 @@
 
 <script>
 // ============================================================
-// MOSQUE STORE INVENTORY - LITE v1.2 (DARK MODE + AUTO BACKUP)
+// MOSQUE STORE INVENTORY - LITE v1.3 (UNIFIED FILENAMES + SILENT BACKUP)
 // ============================================================
 
-// ==== CONFIG: Change mosque names here ====
 const MOSQUES = [
   { id: 'altest', name: 'Test Mosque' },
   { id: 'alhuda', name: 'Masjid Al-Huda' },
@@ -540,7 +538,7 @@ const MOSQUES = [
   { id: 'albaalwie', name: "Masjid Ba'Alwie" }
 ];
 
-const APP_VERSION = '1.2.0';
+const APP_VERSION = '1.3.0';
 const SCHEMA_VERSION = 1;
 const UNDO_TIMEOUT_MS = 5000;
 
@@ -574,6 +572,22 @@ function formatDate(iso) {
 }
 function escapeHtml(s) {
   return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// Helper to get consistent filenames
+function getTimestamp() {
+  const now = new Date();
+  return now.getDate().toString().padStart(2, '0') + 
+         (now.getMonth()+1).toString().padStart(2, '0') + 
+         now.getFullYear() + "_" + 
+         now.getHours().toString().padStart(2, '0') + 
+         now.getMinutes().toString().padStart(2, '0') + 
+         now.getSeconds().toString().padStart(2, '0');
+}
+function getFileBaseName() {
+  const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
+  const mosqueName = mosque ? mosque.name.replace(/\s+/g, '_') : 'Mosque';
+  return `${mosqueName}_Inventory_${getTimestamp()}`;
 }
 
 class LocalStorageRepository {
@@ -1090,70 +1104,34 @@ document.querySelectorAll('.modal-bg').forEach(bg => {
   });
 });
 
-async function backupData() {
-  const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
+// ===== BACKUP LOGIC =====
+async function performBackupDownload() {
   const data = {
     appVersion: APP_VERSION,
     schemaVersion: SCHEMA_VERSION,
     mosqueId: state.currentMosqueId,
-    mosqueName: mosque ? mosque.name : '',
+    mosqueName: MOSQUES.find(m => m.id === state.currentMosqueId).name,
     exportedAt: nowISO(),
     locations: state.locations,
     items: state.items
   };
+  
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   
-  const now = new Date();
-  const timestamp = now.getDate().toString().padStart(2, '0') + 
-                    (now.getMonth()+1).toString().padStart(2, '0') + 
-                    now.getFullYear() + "_" + 
-                    now.getHours().toString().padStart(2, '0') + 
-                    now.getMinutes().toString().padStart(2, '0') + 
-                    now.getSeconds().toString().padStart(2, '0');
-
   a.href = url;
-  a.download = `BACKUP_${state.currentMosqueId}_${timestamp}.json`;
+  a.download = `${getFileBaseName()}.json`; 
   a.click();
   URL.revokeObjectURL(url);
   
   await repository.setLastBackup(nowISO());
   updateLastBackupText();
-  toast('Backup downloaded');
 }
 
-async function backupDataSilent() {
-  const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
-  const data = {
-    appVersion: APP_VERSION,
-    schemaVersion: SCHEMA_VERSION,
-    mosqueId: state.currentMosqueId,
-    mosqueName: mosque ? mosque.name : '',
-    exportedAt: nowISO(),
-    locations: state.locations,
-    items: state.items
-  };
-  
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  
-  const now = new Date();
-  const timestamp = now.getDate().toString().padStart(2, '0') + 
-                    (now.getMonth()+1).toString().padStart(2, '0') + 
-                    now.getFullYear() + "_" + 
-                    now.getHours().toString().padStart(2, '0') + 
-                    now.getMinutes().toString().padStart(2, '0') + 
-                    now.getSeconds().toString().padStart(2, '0');
-
-  a.href = url;
-  a.download = `BACKUP_${state.currentMosqueId}_${timestamp}.json`; 
-  a.click();
-  URL.revokeObjectURL(url);
-  
-  await repository.setLastBackup(nowISO());
-  updateLastBackupText();
+async function backupData() {
+  await performBackupDownload();
+  toast('Backup JSON downloaded');
 }
 
 function triggerRestore() { document.getElementById('restoreFile').click(); }
@@ -1202,48 +1180,17 @@ async function updateLastBackupText() {
   }
 }
 
+// ===== EXPORT LOGIC =====
 function printReport() {
-  const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
-  const mosqueName = mosque ? mosque.name : 'Inventory';
-  
   const originalTitle = document.title;
-  const now = new Date();
-  const timestamp = now.getDate().toString().padStart(2, '0') + 
-                    (now.getMonth()+1).toString().padStart(2, '0') + 
-                    now.getFullYear() + "_" + 
-                    now.getHours().toString().padStart(2, '0') + 
-                    now.getMinutes().toString().padStart(2, '0') + 
-                    now.getSeconds().toString().padStart(2, '0');
+  document.title = getFileBaseName();
   
-  document.title = `${mosqueName.replace(/\s+/g, '_')}_Inventory_${timestamp}`;
-  
-  document.getElementById('printMosqueName').textContent = mosqueName + ' — Inventory';
+  const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
+  document.getElementById('printMosqueName').textContent = mosque.name + ' — Inventory';
   document.getElementById('printDate').textContent = formatDate(nowISO());
   window.print();
   
   document.title = originalTitle;
-}
-
-async function shareData() {
-  const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
-  const mosqueName = mosque ? mosque.name : 'Mosque';
-  
-  if (!confirm("Click OK to Export as PDF.\nClick Cancel to Export as CSV.\n\n(Note: A silent JSON Backup will also be downloaded for safety.)")) {
-    await backupDataSilent();
-    exportCSV();
-    
-    setTimeout(() => {
-      alert(`File downloaded successfully!\n\nInstructions:\n1. Upload the PDF/CSV to Google Drive or WhatsApp.\n2. Keep the JSON file safe for backup.\n3. Share the link with the public.`);
-    }, 500);
-    return;
-  }
-  
-  await backupDataSilent();
-  printReport();
-  
-  setTimeout(() => {
-    alert(`File downloaded successfully!\n\nInstructions:\n1. Upload the PDF to Google Drive or WhatsApp.\n2. Keep the JSON file safe for backup.\n3. Share the link with the public.`);
-  }, 1000);
 }
 
 function exportCSV() {
@@ -1275,20 +1222,31 @@ function exportCSV() {
   const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   
-  const now = new Date();
-  const timestamp = now.getDate().toString().padStart(2, '0') + 
-                    (now.getMonth()+1).toString().padStart(2, '0') + 
-                    now.getFullYear() + "_" + 
-                    now.getHours().toString().padStart(2, '0') + 
-                    now.getMinutes().toString().padStart(2, '0') + 
-                    now.getSeconds().toString().padStart(2, '0');
-                    
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${mosque.name.replace(/\s+/g, '_')}_Inventory_${timestamp}.csv`;
+  a.download = `${getFileBaseName()}.csv`;
   a.click();
   URL.revokeObjectURL(url);
   toast('CSV exported');
+}
+
+async function shareData() {
+  if (!confirm("Click OK to Export as PDF.\nClick Cancel to Export as CSV.\n\n(Note: A JSON Backup will also be downloaded automatically for safety.)")) {
+    exportCSV();
+    setTimeout(() => performBackupDownload(), 500);
+    
+    setTimeout(() => {
+      toast('Files downloaded! Please keep the JSON backup safe.', 'success');
+    }, 1500);
+    return;
+  }
+  
+  printReport();
+  setTimeout(() => performBackupDownload(), 1000);
+  
+  setTimeout(() => {
+    toast('Files downloaded! Please keep the JSON backup safe.', 'success');
+  }, 2000);
 }
 
 document.getElementById('searchInput').addEventListener('input', e => {
