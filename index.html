@@ -6,16 +6,16 @@
 <title>Mosque Store Inventory</title>
 <style>
   :root {
-    --primary: #10b981;      /* Hijau yang lebih cerah untuk dark mode */
+    --primary: #10b981;
     --primary-dark: #059669;
     --danger: #ef4444;
     --warning: #f59e0b;
-    --bg: #0f172a;           /* Latar belakang gelap utama */
-    --card: #1e293b;         /* Latar belakang kad/box */
-    --border: #334155;       /* Warna garisan */
-    --text: #f1f5f9;         /* Warna teks putih lembut */
-    --muted: #94a3b8;        /* Warna teks kelabu */
-    --light: #0f172a;        /* Latar belakang butang secondary */
+    --bg: #0f172a;
+    --card: #1e293b;
+    --border: #334155;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --light: #0f172a;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -28,7 +28,7 @@
   .container { max-width: 1100px; margin: 0 auto; }
 
   header {
-    background: linear-gradient(135deg, #065f46, #064e3b); /* Hijau gelap */
+    background: linear-gradient(135deg, #065f46, #064e3b);
     color: white;
     padding: 20px 24px;
     border-radius: 12px;
@@ -350,7 +350,6 @@
     .mosque-selector select { width: 100%; }
   }
 
-  /* Print mode akan kekal cerah supaya jimat dakwat & senang baca di kertas */
   @media print {
     body { background: white; padding: 0; color: black; }
     header, .mosque-selector, .toolbar, .search-bar, .summary,
@@ -391,9 +390,7 @@
   <div class="toolbar">
     <button class="btn btn-primary" onclick="openAddItem()">➕ Add Item</button>
     <button class="btn btn-secondary" onclick="openAddLocation()">📍 Add Location</button>
-    <button class="btn btn-secondary" onclick="printReport()">🖨️ Print PDF</button>
-    <button class="btn btn-secondary" onclick="exportCSV()">📊 Export CSV</button>
-    <button class="btn btn-primary" onclick="shareData()">📤 Share / Export</button> <!-- added 2 Nov 2026 -->
+    <button class="btn btn-primary" onclick="shareData()">📤 Share / Export</button>
     <button class="btn btn-secondary" onclick="backupData()">💾 Backup</button>
     <button class="btn btn-secondary" onclick="triggerRestore()">📂 Restore</button>
     <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreData(event)">
@@ -501,8 +498,8 @@
     </ol>
     <h4>Print / Export</h4>
     <ul>
-      <li><strong>Print PDF</strong> — prints the current mosque's inventory. Use your browser's "Save as PDF" option.</li>
-      <li><strong>Export CSV</strong> — downloads a spreadsheet file for the current mosque only.</li>
+      <li><strong>Share / Export</strong> — Downloads a clean PDF or CSV with a unique timestamped filename (e.g., Masjid_AlKhair_Inventory_02112026_154500.pdf).</li>
+      <li>After downloading, you can upload this file to your mosque's Google Drive, WhatsApp group, or official website for the public to view.</li>
     </ul>
     <h4>Backup (Important!)</h4>
     <ul>
@@ -528,9 +525,8 @@
 
 <script>
 // ============================================================
-// MOSQUE STORE INVENTORY - LITE v1.0 (DARK MODE)
+// MOSQUE STORE INVENTORY - LITE v1.1 (DARK MODE + SHARE)
 // ============================================================
-
 // ==== CONFIG: Change mosque names here ====
 const MOSQUES = [
   { id: 'altest', name: 'Test Mosque' },
@@ -542,7 +538,7 @@ const MOSQUES = [
   { id: 'albaalwie', name: "Masjid Ba'Alwie" }
 ];
 
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '1.1.0';
 const SCHEMA_VERSION = 1;
 const UNDO_TIMEOUT_MS = 5000;
 
@@ -1161,11 +1157,43 @@ async function updateLastBackupText() {
   }
 }
 
+// ====== NEW: AUTO-RENAME PRINT & SHARE EXPORT ======
 function printReport() {
   const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
-  document.getElementById('printMosqueName').textContent = mosque ? mosque.name + ' — Inventory' : 'Inventory';
+  const mosqueName = mosque ? mosque.name : 'Inventory';
+  
+  const originalTitle = document.title;
+  const now = new Date();
+  const timestamp = now.getDate().toString().padStart(2, '0') + 
+                    (now.getMonth()+1).toString().padStart(2, '0') + 
+                    now.getFullYear() + "_" + 
+                    now.getHours().toString().padStart(2, '0') + 
+                    now.getMinutes().toString().padStart(2, '0') + 
+                    now.getSeconds().toString().padStart(2, '0');
+  
+  document.title = `${mosqueName.replace(/\s+/g, '_')}_Inventory_${timestamp}`;
+  
+  document.getElementById('printMosqueName').textContent = mosqueName + ' — Inventory';
   document.getElementById('printDate').textContent = formatDate(nowISO());
   window.print();
+  
+  document.title = originalTitle;
+}
+
+function shareData() {
+  const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
+  const mosqueName = mosque ? mosque.name : 'Mosque';
+  
+  // Use modal instead of native confirm for better UX on mobile
+  if (confirm("Click OK to Export as PDF.\nClick Cancel to Export as CSV.")) {
+    printReport();
+  } else {
+    exportCSV();
+  }
+  
+  setTimeout(() => {
+    alert(`File downloaded successfully!\n\nInstructions:\n1. You can now upload this file to your Mosque's Google Drive.\n2. Or attach it to a WhatsApp group/Email.\n3. Share the link with the public.`);
+  }, 500);
 }
 
 function exportCSV() {
@@ -1196,35 +1224,23 @@ function exportCSV() {
   const csv = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
   const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
+  
+  const now = new Date();
+  const timestamp = now.getDate().toString().padStart(2, '0') + 
+                    (now.getMonth()+1).toString().padStart(2, '0') + 
+                    now.getFullYear() + "_" + 
+                    now.getHours().toString().padStart(2, '0') + 
+                    now.getMinutes().toString().padStart(2, '0') + 
+                    now.getSeconds().toString().padStart(2, '0');
+                    
   const a = document.createElement('a');
   a.href = url;
-  a.download = `inventory_${state.currentMosqueId}_${nowISO().split('T')[0]}.csv`;
+  a.download = `${mosque.name.replace(/\s+/g, '_')}_Inventory_${timestamp}.csv`;
   a.click();
   URL.revokeObjectURL(url);
   toast('CSV exported');
 }
-function shareData() {
-  const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
-  const mosqueName = mosque ? mosque.name : 'Mosque';
-  
-  const choice = confirm("Click OK to Export as PDF, or Cancel to Export as CSV.");
-  
-  if (choice) {
-    // If PDF (OK)
-    printReport(); 
-    setTimeout(() => {
-      const text = encodeURIComponent(`Latest inventory list for ${mosqueName}. Thank you.`);
-      window.open(`https://wa.me/?text=${text}`, '_blank');
-    }, 1000);
-  } else {
-    // If CSV (Cancel)
-    exportCSV();
-    setTimeout(() => {
-      const text = encodeURIComponent(`Latest inventory list for ${mosqueName}. Thank you.`);
-      window.open(`https://wa.me/?text=${text}`, '_blank');
-    }, 1000);
-  }
-}
+
 document.getElementById('searchInput').addEventListener('input', e => {
   state.search = e.target.value;
   render();
