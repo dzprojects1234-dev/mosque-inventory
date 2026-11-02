@@ -351,26 +351,56 @@
   }
 
   @media print {
-    @page { margin: 15mm; } /* This is to make a better margin on the paper. */
+    @page { 
+      margin: 15mm; 
+      /* This forces the browser to remove the header/footer (URL & Date) */
+      @top-left { content: none; }
+      @top-right { content: none; }
+      @bottom-left { content: none; }
+      @bottom-right { content: none; }
+    }
     body { 
-      background: white; 
+      background: white !important; 
       padding: 0; 
-      color: black; 
+      color: black !important; 
       -webkit-print-color-adjust: exact; 
-          }
+    }
+    
+    /* Hide all buttons and UI */
     header, .mosque-selector, .toolbar, .search-bar, .summary,
     .location-actions, .item-actions, .qty-btn, .toast,
     .modal-bg, .btn { display: none !important; }
+
     .container { max-width: 100%; padding: 0; }
     .location-group { border: none; margin-bottom: 20px; }
-    .location-header { background: white; border-bottom: 2px solid #000; color: black; }
-    .item { grid-template-columns: 1fr auto; border-bottom: 1px dotted #999; padding: 6px 0; color: black; }
-    .qty-input { border: none; width: auto; text-align: right; font-weight: 700; color: black; background: transparent; }
+    
+    /* Force white background and black text */
+    .location-header { 
+      background: white !important; 
+      border-bottom: 2px solid #000; 
+      color: black !important; 
+    }
+    .item { 
+      background: white !important; /* Buang kotak hitam */
+      grid-template-columns: 1fr auto; 
+      border-bottom: 1px dotted #999; 
+      padding: 6px 0; 
+      color: black !important; 
+    }
+    .item-name, .item-meta, .unit { color: black !important; }
+    
+    .qty-input { 
+      border: none; 
+      width: auto; 
+      text-align: right; 
+      font-weight: 700; 
+      color: black !important; 
+      background: transparent !important; 
+    }
+    
     .print-header { display: block !important; margin-bottom: 20px; color: black; }
-    .print-header h2 { font-size: 1.4rem; }
+    .print-header h2 { font-size: 1.4rem; color: black; }
     .print-header p { font-size: 0.85rem; color: #555; }
-     /* Code to hide browser URL & Date */
-    .header, .footer { display: none !important; }
   }
   .print-header { display: none; }
 </style>
