@@ -475,7 +475,7 @@
     <div id="notesListContainer"></div>
     <label style="margin-top:12px;">Add new note</label>
     <div style="display:flex; gap:8px;">
-      <input type="text" id="newNoteInput" placeholder="e.g. Bilal ambil 5kg untuk kenduri" style="flex:1;">
+      <input type="text" id="newNoteInput" placeholder="e.g. Bilal took 5kg for event" style="flex:1;">
       <button class="btn btn-primary" onclick="addNote()">Add</button>
     </div>
     <div class="modal-actions">
@@ -496,15 +496,16 @@
       <li>Use <strong>+ / −</strong> buttons or type a number to change quantity. It saves automatically.</li>
       <li>Click <strong>Edit</strong> to change details, <strong>Notes</strong> to add notes, <strong>Delete</strong> to remove.</li>
     </ol>
-    <h4>Print / Export</h4>
+    <h4>Share / Export</h4>
     <ul>
       <li><strong>Share / Export</strong> — Downloads a clean PDF or CSV with a unique timestamped filename (e.g., Masjid_AlKhair_Inventory_02112026_154500.pdf).</li>
-      <li>After downloading, you can upload this file to your mosque's Google Drive, WhatsApp group, or official website for the public to view.</li>
+      <li>It will also automatically download a <strong>JSON Backup</strong> at the same time for safety.</li>
+      <li>You can upload these files to Google Drive, WhatsApp, or your mosque's website for the public to view.</li>
     </ul>
     <h4>Backup (Important!)</h4>
     <ul>
-      <li><strong>Backup</strong> — downloads a JSON file with ALL data for the current mosque. Do this weekly and save to Google Drive or email it to yourself.</li>
-      <li><strong>Restore</strong> — upload a JSON backup file to restore data.</li>
+      <li><strong>Backup</strong> — Downloads a JSON file with ALL data for the current mosque. Do this weekly and save to Google Drive or email it to yourself.</li>
+      <li><strong>Restore</strong> — Upload a JSON backup file to restore data.</li>
       <li><strong>Warning:</strong> Data is stored in your browser only. If you clear browser cache, data is lost. Always keep backups.</li>
     </ul>
     <h4>Data is Separate per Mosque</h4>
@@ -525,8 +526,9 @@
 
 <script>
 // ============================================================
-// MOSQUE STORE INVENTORY - LITE v1.1 (DARK MODE + SHARE)
+// MOSQUE STORE INVENTORY - LITE v1.2 (DARK MODE + AUTO BACKUP)
 // ============================================================
+
 // ==== CONFIG: Change mosque names here ====
 const MOSQUES = [
   { id: 'altest', name: 'Test Mosque' },
@@ -538,7 +540,7 @@ const MOSQUES = [
   { id: 'albaalwie', name: "Masjid Ba'Alwie" }
 ];
 
-const APP_VERSION = '1.1.0';
+const APP_VERSION = '1.2.0';
 const SCHEMA_VERSION = 1;
 const UNDO_TIMEOUT_MS = 5000;
 
@@ -1102,13 +1104,56 @@ async function backupData() {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
+  
+  const now = new Date();
+  const timestamp = now.getDate().toString().padStart(2, '0') + 
+                    (now.getMonth()+1).toString().padStart(2, '0') + 
+                    now.getFullYear() + "_" + 
+                    now.getHours().toString().padStart(2, '0') + 
+                    now.getMinutes().toString().padStart(2, '0') + 
+                    now.getSeconds().toString().padStart(2, '0');
+
   a.href = url;
-  a.download = `inventory_${state.currentMosqueId}_${nowISO().split('T')[0]}.json`;
+  a.download = `BACKUP_${state.currentMosqueId}_${timestamp}.json`;
   a.click();
   URL.revokeObjectURL(url);
+  
   await repository.setLastBackup(nowISO());
   updateLastBackupText();
   toast('Backup downloaded');
+}
+
+async function backupDataSilent() {
+  const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
+  const data = {
+    appVersion: APP_VERSION,
+    schemaVersion: SCHEMA_VERSION,
+    mosqueId: state.currentMosqueId,
+    mosqueName: mosque ? mosque.name : '',
+    exportedAt: nowISO(),
+    locations: state.locations,
+    items: state.items
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  
+  const now = new Date();
+  const timestamp = now.getDate().toString().padStart(2, '0') + 
+                    (now.getMonth()+1).toString().padStart(2, '0') + 
+                    now.getFullYear() + "_" + 
+                    now.getHours().toString().padStart(2, '0') + 
+                    now.getMinutes().toString().padStart(2, '0') + 
+                    now.getSeconds().toString().padStart(2, '0');
+
+  a.href = url;
+  a.download = `BACKUP_${state.currentMosqueId}_${timestamp}.json`; 
+  a.click();
+  URL.revokeObjectURL(url);
+  
+  await repository.setLastBackup(nowISO());
+  updateLastBackupText();
 }
 
 function triggerRestore() { document.getElementById('restoreFile').click(); }
@@ -1157,7 +1202,6 @@ async function updateLastBackupText() {
   }
 }
 
-// ====== NEW: AUTO-RENAME PRINT & SHARE EXPORT ======
 function printReport() {
   const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
   const mosqueName = mosque ? mosque.name : 'Inventory';
@@ -1180,20 +1224,26 @@ function printReport() {
   document.title = originalTitle;
 }
 
-function shareData() {
+async function shareData() {
   const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
   const mosqueName = mosque ? mosque.name : 'Mosque';
   
-  // Use modal instead of native confirm for better UX on mobile
-  if (confirm("Click OK to Export as PDF.\nClick Cancel to Export as CSV.")) {
-    printReport();
-  } else {
+  if (!confirm("Click OK to Export as PDF.\nClick Cancel to Export as CSV.\n\n(Note: A silent JSON Backup will also be downloaded for safety.)")) {
+    await backupDataSilent();
     exportCSV();
+    
+    setTimeout(() => {
+      alert(`File downloaded successfully!\n\nInstructions:\n1. Upload the PDF/CSV to Google Drive or WhatsApp.\n2. Keep the JSON file safe for backup.\n3. Share the link with the public.`);
+    }, 500);
+    return;
   }
   
+  await backupDataSilent();
+  printReport();
+  
   setTimeout(() => {
-    alert(`File downloaded successfully!\n\nInstructions:\n1. You can now upload this file to your Mosque's Google Drive.\n2. Or attach it to a WhatsApp group/Email.\n3. Share the link with the public.`);
-  }, 500);
+    alert(`File downloaded successfully!\n\nInstructions:\n1. Upload the PDF to Google Drive or WhatsApp.\n2. Keep the JSON file safe for backup.\n3. Share the link with the public.`);
+  }, 1000);
 }
 
 function exportCSV() {
