@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mosque Store Inventory</title>
+<style>
+  :root {
+    --primary: #0d7a4f;
+    --primary-dark: #075e3a;
+    --danger: #dc2626;
+    --warning: #d97706;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --text: #1e293b;
+    --muted: #64748b;
+    --light: #f1f5f9;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    padding: 16px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+  }
+  header h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  header p { font-size: 0.9rem; opacity: 0.9; }
+
+  .mosque-selector {
+    background: var(--card);
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .mosque-selector label { font-weight: 600; font-size: 0.9rem; }
+  .mosque-selector select {
+    padding: 10px 14px;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    background: white;
+    color: var(--text);
+    cursor: pointer;
+    min-width: 220px;
+  }
+
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.15s;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-secondary { background: var(--light); color: var(--text); border: 1px solid var(--border); }
+  .btn-danger { background: var(--danger); color: white; }
+  .btn-warning { background: var(--warning); color: white; }
+  .btn-sm { padding: 6px 10px; font-size: 0.8rem; }
+
+  .search-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .search-bar input {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  .search-bar select {
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background: white;
+    cursor: pointer;
+  }
+
+  .summary {
+    background: var(--light);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .location-group {
+    background: var(--card);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .location-header {
+    background: var(--light);
+    padding: 12px 16px;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .location-header .floor {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .location-actions { display: flex; gap: 6px; }
+
+  .item {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+  }
+  .item:last-child { border-bottom: none; }
+  .item-name {
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-bottom: 4px;
+  }
+  .item-meta {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .item-meta .code {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.8rem;
+  }
+  .item-qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .qty-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--light);
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .qty-btn:hover { background: #e2e8f0; }
+  .qty-input {
+    width: 90px;
+    padding: 8px 10px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .qty-input:focus { border-color: var(--primary); outline: none; }
+  .unit { font-size: 0.9rem; color: var(--muted); min-width: 50px; }
+
+  .item-actions { display: flex; gap: 6px; margin-top: 8px; }
+
+  .empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+  }
+
+  .modal-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 16px;
+  }
+  .modal-bg.active { display: flex; }
+  .modal {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal h3 { margin-bottom: 16px; font-size: 1.2rem; }
+  .modal label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-top: 12px;
+    margin-bottom: 4px;
+  }
+  .modal input, .modal select, .modal textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+  }
+  .modal input:focus, .modal select:focus, .modal textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+  }
+  .modal-row {
+    display: flex;
+    gap: 12px;
+  }
+  .modal-row > div { flex: 1; }
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    z-index: 2000;
+    display: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    align-items: center;
+    gap: 12px;
+  }
+  .toast.active { display: flex; }
+  .toast.success { background: var(--primary); }
+  .toast.error { background: var(--danger); }
+  .toast button {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.8rem;
+  }
+
+  .notes-list {
+    margin-top: 8px;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px;
+    background: var(--light);
+  }
+  .note-item {
+    padding: 6px 8px;
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .note-item:last-child { border-bottom: none; }
+  .note-date { color: var(--muted); font-size: 0.75rem; }
+  .note-del {
+    background: none;
+    border: none;
+    color: var(--danger);
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+
+  .help-content h4 { margin-top: 16px; margin-bottom: 8px; color: var(--primary); }
+  .help-content p, .help-content li { font-size: 0.9rem; margin-bottom: 6px; line-height: 1.6; }
+  .help-content ol, .help-content ul { padding-left: 20px; }
+
+  @media (max-width: 600px) {
+    .item { grid-template-columns: 1fr; }
+    .item-qty { justify-content: flex-start; }
+    header h1 { font-size: 1.2rem; }
+    .mosque-selector { flex-direction: column; align-items: stretch; }
+    .mosque-selector select { width: 100%; }
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    header, .mosque-selector, .toolbar, .search-bar, .summary,
+    .location-actions, .item-actions, .qty-btn, .toast,
+    .modal-bg, .btn { display: none !important; }
+    .container { max-width: 100%; padding: 0; }
+    .location-group { border: none; margin-bottom: 20px; }
+    .location-header { background: white; border-bottom: 2px solid #000; padding: 8px 0; }
+    .item { grid-template-columns: 1fr auto; border-bottom: 1px dotted #999; padding: 6px 0; }
+    .qty-input { border: none; width: auto; text-align: right; font-weight: 700; }
+    .print-header { display: block !important; margin-bottom: 20px; }
+    .print-header h2 { font-size: 1.4rem; }
+    .print-header p { font-size: 0.85rem; color: #555; }
+  }
+  .print-header { display: none; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="print-header">
+    <h2 id="printMosqueName">Mosque Store Inventory</h2>
+    <p>Printed: <span id="printDate"></span></p>
+  </div>
+
+  <header>
+    <h1>🕌 Mosque Store Inventory</h1>
+    <p>Simple tool · No money · No people names · Offline</p>
+  </header>
+
+  <div class="mosque-selector">
+    <label for="mosqueSelect">🏛️ Mosque:</label>
+    <select id="mosqueSelect"></select>
+    <button class="btn btn-secondary btn-sm" onclick="openHelp()">❓ Help</button>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn btn-primary" onclick="openAddItem()">➕ Add Item</button>
+    <button class="btn btn-secondary" onclick="openAddLocation()">📍 Add Location</button>
+    <button class="btn btn-secondary" onclick="printReport()">🖨️ Print PDF</button>
+    <button class="btn btn-secondary" onclick="exportCSV()">📊 Export CSV</button>
+    <button class="btn btn-secondary" onclick="backupData()">💾 Backup</button>
+    <button class="btn btn-secondary" onclick="triggerRestore()">📂 Restore</button>
+    <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreData(event)">
+  </div>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="🔍 Search name, size, or code..." oninput="render()">
+    <select id="sortSelect" onchange="render()">
+      <option value="location">Sort: Location</option>
+      <option value="name">Sort: Item Name</option>
+      <option value="code">Sort: Item Code</option>
+    </select>
+  </div>
+
+  <div class="summary">
+    <span id="summaryText">0 items</span>
+    <span id="lastBackupText"></span>
+  </div>
+
+  <div id="itemList"></div>
+
+</div>
+
+<!-- Add/Edit Item Modal -->
+<div class="modal-bg" id="itemModal">
+  <div class="modal">
+    <h3 id="itemModalTitle">Add Item</h3>
+    <label>Item Name *</label>
+    <input type="text" id="itemName" placeholder="e.g. Cawan Plastic">
+    <div class="modal-row">
+      <div>
+        <label>Size / Variant (optional)</label>
+        <input type="text" id="itemSize" placeholder="e.g. 12oz">
+      </div>
+      <div>
+        <label>Item Code (optional)</label>
+        <input type="text" id="itemCode" placeholder="e.g. CP-12">
+      </div>
+    </div>
+    <div class="modal-row">
+      <div>
+        <label>Quantity *</label>
+        <input type="number" id="itemQty" value="0" min="0">
+      </div>
+      <div>
+        <label>Unit *</label>
+        <input type="text" id="itemUnit" value="pcs" placeholder="pcs, kg, botol">
+      </div>
+    </div>
+    <label>Location *</label>
+    <select id="itemLocation"></select>
+    <label>Notes (optional)</label>
+    <textarea id="itemNotes" rows="2" placeholder="Any extra info..."></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('itemModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveItem()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Location Modal -->
+<div class="modal-bg" id="locationModal">
+  <div class="modal">
+    <h3 id="locationModalTitle">Add Location</h3>
+    <label>Location Name *</label>
+    <input type="text" id="locName" placeholder="e.g. Store Room A">
+    <label>Floor / Level (optional)</label>
+    <input type="text" id="locFloor" placeholder="e.g. Level 1, Basement, Rooftop">
+    <label>Notes (optional)</label>
+    <textarea id="locNotes" rows="2" placeholder="e.g. Near staircase"></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('locationModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveLocation()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Manage Notes Modal -->
+<div class="modal-bg" id="notesModal">
+  <div class="modal">
+    <h3>Notes for <span id="notesItemName"></span></h3>
+    <div id="notesListContainer"></div>
+    <label style="margin-top:12px;">Add new note</label>
+    <div style="display:flex; gap:8px;">
+      <input type="text" id="newNoteInput" placeholder="e.g. Bilal ambil 5kg untuk kenduri" style="flex:1;">
+      <button class="btn btn-primary" onclick="addNote()">Add</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('notesModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Help Modal -->
+<div class="modal-bg" id="helpModal">
+  <div class="modal help-content">
+    <h3>❓ Help / How to Use</h3>
+    <h4>Basic Use</h4>
+    <ol>
+      <li>Choose a mosque from the dropdown at the top.</li>
+      <li>Click <strong>+ Add Location</strong> to create storage locations first.</li>
+      <li>Click <strong>+ Add Item</strong> to add items to a location.</li>
+      <li>Use <strong>+ / −</strong> buttons or type a number to change quantity. It saves automatically.</li>
+      <li>Click <strong>Edit</strong> to change details, <strong>Notes</strong> to add notes, <strong>Delete</strong> to remove.</li>
+    </ol>
+    <h4>Print / Export</h4>
+    <ul>
+      <li><strong>Print PDF</strong> — prints the current mosque's inventory. Use your browser's "Save as PDF" option.</li>
+      <li><strong>Export CSV</strong> — downloads a spreadsheet file for the current mosque only.</li>
+    </ul>
+    <h4>Backup (Important!)</h4>
+    <ul>
+      <li><strong>Backup</strong> — downloads a JSON file with ALL data for the current mosque. Do this weekly and save to Google Drive or email it to yourself.</li>
+      <li><strong>Restore</strong> — upload a JSON backup file to restore data.</li>
+      <li><strong>Warning:</strong> Data is stored in your browser only. If you clear browser cache, data is lost. Always keep backups.</li>
+    </ul>
+    <h4>Data is Separate per Mosque</h4>
+    <p>Each mosque has its own data. Printing, CSV, and backup only include the currently selected mosque.</p>
+    <h4>No Money, No People Names</h4>
+    <p>This app deliberately does not track prices, values, or people's names. Use Notes if you need to remember something like "who took it".</p>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="closeModal('helpModal')">Got it</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <span id="toastText"></span>
+  <button id="undoBtn" style="display:none;" onclick="performUndo()">Undo</button>
+</div>
+
+<script>
+// ============================================================
+// MOSQUE STORE INVENTORY - LITE v1.0
+// ============================================================
+// Cloud-ready architecture:
+// - Repository Pattern (swap LocalStorage for Cloud later)
+// - Async data functions (ready for fetch/Supabase)
+// - UUID ids, ISO timestamps (Supabase compatible)
+// - Soft delete (isActive flag)
+// - Version number in backup
+// ============================================================
+
+// ===== CONFIG: Change mosque names here =====
+const MOSQUES = [
+  { id: 'alkhair', name: 'Masjid Al-Khair' },
+  { id: 'aliman',  name: 'Masjid Al-Iman' },
+  { id: 'altest',  name: 'Test Mosque' }
+];
+
+const APP_VERSION = '1.0.0';
+const SCHEMA_VERSION = 1;
+const UNDO_TIMEOUT_MS = 5000;
+
+// ===== STATE =====
+let state = {
+  currentMosqueId: null,
+  locations: [],
+  items: [],
+  search: '',
+  sort: 'location',
+  editingItemId: null,
+  editingLocationId: null,
+  notesItemId: null,
+  undoAction: null,
+  undoTimeout: null
+};
+
+// ===== UTILITIES =====
+function generateId() {
+  return 'id-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+}
+function nowISO() { return new Date().toISOString(); }
+function formatDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  const day = d.getDate().toString().padStart(2, '0');
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let h = d.getHours();
+  const ampm = h >= 12 ? 'pm' : 'am';
+  h = h % 12 || 12;
+  const m = d.getMinutes().toString().padStart(2, '0');
+  return `${day} ${months[d.getMonth()]} ${d.getFullYear()}, ${h}:${m} ${ampm}`;
+}
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ===== REPOSITORY (swap for CloudRepository later) =====
+class LocalStorageRepository {
+  constructor(mosqueId) {
+    this.key = 'mosqueInventory_' + mosqueId;
+  }
+  async load() {
+    try {
+      const raw = localStorage.getItem(this.key);
+      if (!raw) return { locations: [], items: [], lastBackup: null };
+      const data = JSON.parse(raw);
+      return {
+        locations: data.locations || [],
+        items: data.items || [],
+        lastBackup: data.lastBackup || null
+      };
+    } catch (e) {
+      console.error('Load error:', e);
+      return { locations: [], items: [], lastBackup: null };
+    }
+  }
+  async save(data) {
+    localStorage.setItem(this.key, JSON.stringify(data));
+  }
+  async getLastBackup() {
+    const data = await this.load();
+    return data.lastBackup;
+  }
+  async setLastBackup(iso) {
+    const data = await this.load();
+    data.lastBackup = iso;
+    await this.save(data);
+  }
+}
+let repository = null;
+
+// ===== INIT =====
+async function init() {
+  // Populate mosque dropdown
+  const sel = document.getElementById('mosqueSelect');
+  sel.innerHTML = '';
+  MOSQUES.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m.id;
+    opt.textContent = m.name;
+    sel.appendChild(opt);
+  });
+  // Try to restore last mosque from session
+  const lastMosque = sessionStorage.getItem('lastMosqueId') || MOSQUES[0].id;
+  sel.value = lastMosque;
+  state.currentMosqueId = lastMosque;
+  sel.onchange = () => switchMosque(sel.value);
+  await switchMosque(lastMosque);
+}
+
+async function switchMosque(mosqueId) {
+  state.currentMosqueId = mosqueId;
+  sessionStorage.setItem('lastMosqueId', mosqueId);
+  repository = new LocalStorageRepository(mosqueId);
+  await loadData();
+  render();
+  updateLastBackupText();
+}
+
+async function loadData() {
+  const data = await repository.load();
+  state.locations = data.locations.filter(l => l.isActive !== false);
+  state.items = data.items.filter(i => i.isActive !== false);
+}
+
+// ===== RENDER =====
+function render() {
+  const list = document.getElementById('itemList');
+  list.innerHTML = '';
+
+  // Filter by search
+  const q = state.search.toLowerCase().trim();
+  let filteredItems = state.items;
+  if (q) {
+    filteredItems = state.items.filter(i =>
+      (i.name || '').toLowerCase().includes(q) ||
+      (i.size || '').toLowerCase().includes(q) ||
+      (i.code || '').toLowerCase().includes(q)
+    );
+  }
+
+  // Summary
+  const totalQty = filteredItems.reduce((s, i) => s + (Number(i.quantity) || 0), 0);
+  document.getElementById('summaryText').textContent =
+    `${filteredItems.length} item(s), ${totalQty} total quantity`;
+
+  if (state.locations.length === 0) {
+    list.innerHTML = `<div class="empty">
+      <p style="font-size:1.1rem; margin-bottom:8px;">📍 No locations yet.</p>
+      <p>Click <strong>+ Add Location</strong> to start.</p>
+    </div>`;
+    return;
+  }
+
+  // Group by location or flat
+  if (state.sort === 'location') {
+    const byLoc = {};
+    state.locations.forEach(l => byLoc[l.id] = []);
+    const unassigned = [];
+    filteredItems.forEach(i => {
+      if (byLoc[i.locationId]) byLoc[i.locationId].push(i);
+      else unassigned.push(i);
+    });
+
+    state.locations.forEach(loc => {
+      const items = byLoc[loc.id];
+      if (items.length === 0) return;
+      items.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+      renderLocationGroup(list, loc, items);
+    });
+
+    if (unassigned.length > 0) {
+      renderLocationGroup(list, { id: null, name: '⚠️ Unassigned', floor: '' }, unassigned);
+    }
+  } else {
+    // Flat list
+    const sorted = [...filteredItems];
+    if (state.sort === 'name') sorted.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    if (state.sort === 'code') sorted.sort((a, b) => (a.code || 'zzz').localeCompare(b.code || 'zzz'));
+    const group = document.createElement('div');
+    group.className = 'location-group';
+    group.innerHTML = `<div class="location-header">All Items (${sorted.length})</div>`;
+    sorted.forEach(item => group.appendChild(renderItem(item)));
+    if (sorted.length === 0) group.innerHTML += `<div class="empty">No items match.</div>`;
+    list.appendChild(group);
+  }
+
+  if (filteredItems.length === 0 && state.locations.length > 0) {
+    list.innerHTML = `<div class="empty">No items match your search.</div>`;
+  }
+}
+
+function renderLocationGroup(container, loc, items) {
+  const div = document.createElement('div');
+  div.className = 'location-group';
+  const header = document.createElement('div');
+  header.className = 'location-header';
+  header.innerHTML = `
+    <div>
+      📍 ${escapeHtml(loc.name)}
+      ${loc.floor ? `<span class="floor"> · ${escapeHtml(loc.floor)}</span>` : ''}
+      <span style="font-size:0.85rem; color:var(--muted); font-weight:500;"> · ${items.length} item(s)</span>
+    </div>
+    <div class="location-actions">
+      ${loc.id ? `
+        <button class="btn btn-secondary btn-sm" onclick="editLocation('${loc.id}')">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteLocation('${loc.id}')">🗑️</button>
+      ` : ''}
+    </div>
+  `;
+  div.appendChild(header);
+  items.forEach(item => div.appendChild(renderItem(item)));
+  container.appendChild(div);
+}
+
+function renderItem(item) {
+  const el = document.createElement('div');
+  el.className = 'item';
+  const sizePart = item.size ? ` (${escapeHtml(item.size)})` : '';
+  const codePart = item.code ? `<span class="code">${escapeHtml(item.code)}</span>` : '';
+  const notesCount = (item.notes || []).length;
+  el.innerHTML = `
+    <div>
+      <div class="item-name">${escapeHtml(item.name)}${sizePart}</div>
+      <div class="item-meta">
+        ${codePart}
+        ${item.lastUpdated ? `<span style="margin-left:8px;">Updated: ${formatDate(item.lastUpdated)}</span>` : ''}
+        ${notesCount > 0 ? `<span style="margin-left:8px;">📝 ${notesCount} note(s)</span>` : ''}
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-secondary btn-sm" onclick="editItem('${item.id}')">✏️ Edit</button>
+        <button class="btn btn-secondary btn-sm" onclick="openNotes('${item.id}')">📝 Notes</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteItem('${item.id}')">🗑️ Delete</button>
+      </div>
+    </div>
+    <div class="item-qty">
+      <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
+      <input type="number" class="qty-input" value="${item.quantity}"
+        onchange="setQty('${item.id}', this.value)"
+        onkeydown="if(event.key==='Enter'){this.blur();}">
+      <span class="unit">${escapeHtml(item.unit || '')}</span>
+      <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+    </div>
+  `;
+  return el;
+}
+
+// ===== ITEM ACTIONS =====
+async function changeQty(itemId, delta) {
+  const item = state.items.find(i => i.id === itemId);
+  if (!item) return;
+  const oldQty = Number(item.quantity) || 0;
+  const newQty = Math.max(0, oldQty + delta);
+  if (newQty === oldQty) return;
+  item.quantity = newQty;
+  item.lastUpdated = nowISO();
+  await persist();
+  render();
+  showUndo(`Quantity: ${oldQty} → ${newQty}`, async () => {
+    item.quantity = oldQty;
+    await persist();
+    render();
+  });
+}
+
+async function setQty(itemId, val) {
+  const item = state.items.find(i => i.id === itemId);
+  if (!item) return;
+  const oldQty = Number(item.quantity) || 0;
+  const newQty = Math.max(0, parseInt(val) || 0);
+  if (newQty === oldQty) return;
+  item.quantity = newQty;
+  item.lastUpdated = nowISO();
+  await persist();
+  render();
+  showUndo(`Quantity: ${oldQty} → ${newQty}`, async () => {
+    item.quantity = oldQty;
+    await persist();
+    render();
+  });
+}
+
+async function deleteItem(itemId) {
+  const item = state.items.find(i => i.id === itemId);
+  if (!item) return;
+  if (!confirm(`Delete "${item.name}"? You can undo this.`)) return;
+  item.isActive = false;
+  item.updatedAt = nowISO();
+  await persist();
+  state.items = state.items.filter(i => i.id !== itemId);
+  render();
+  showUndo(`Deleted: ${item.name}`, async () => {
+    item.isActive = true;
+    await persist();
+    await loadData();
+    render();
+  });
+}
+
+// ===== LOCATION ACTIONS =====
+async function deleteLocation(locId) {
+  const loc = state.locations.find(l => l.id === locId);
+  if (!loc) return;
+  const itemsHere = state.items.filter(i => i.locationId === locId);
+  if (itemsHere.length > 0) {
+    alert(`Cannot delete "${loc.name}". It has ${itemsHere.length} item(s).\n\nPlease move or delete those items first.`);
+    return;
+  }
+  if (!confirm(`Delete location "${loc.name}"?`)) return;
+  loc.isActive = false;
+  loc.updatedAt = nowISO();
+  await persist();
+  await loadData();
+  render();
+  toast(`Location deleted: ${loc.name}`);
+}
+
+// ===== MODALS: ITEM =====
+function openAddItem() {
+  if (state.locations.length === 0) {
+    alert('Please add a location first.');
+    return;
+  }
+  state.editingItemId = null;
+  document.getElementById('itemModalTitle').textContent = 'Add Item';
+  document.getElementById('itemName').value = '';
+  document.getElementById('itemSize').value = '';
+  document.getElementById('itemCode').value = '';
+  document.getElementById('itemQty').value = '0';
+  document.getElementById('itemUnit').value = 'pcs';
+  document.getElementById('itemNotes').value = '';
+  populateLocationSelect();
+  document.getElementById('itemModal').classList.add('active');
+  document.getElementById('itemName').focus();
+}
+
+function editItem(itemId) {
+  const item = state.items.find(i => i.id === itemId);
+  if (!item) return;
+  state.editingItemId = itemId;
+  document.getElementById('itemModalTitle').textContent = 'Edit Item';
+  document.getElementById('itemName').value = item.name || '';
+  document.getElementById('itemSize').value = item.size || '';
+  document.getElementById('itemCode').value = item.code || '';
+  document.getElementById('itemQty').value = item.quantity || 0;
+  document.getElementById('itemUnit').value = item.unit || 'pcs';
+  document.getElementById('itemNotes').value = (item.notes || []).map(n => n.text).join('\n') || '';
+  populateLocationSelect();
+  document.getElementById('itemLocation').value = item.locationId || '';
+  document.getElementById('itemModal').classList.add('active');
+}
+
+function populateLocationSelect() {
+  const sel = document.getElementById('itemLocation');
+  sel.innerHTML = '';
+  state.locations.forEach(l => {
+    const opt = document.createElement('option');
+    opt.value = l.id;
+    opt.textContent = l.name + (l.floor ? ` (${l.floor})` : '');
+    sel.appendChild(opt);
+  });
+}
+
+async function saveItem() {
+  const name = document.getElementById('itemName').value.trim();
+  if (!name) { alert('Item name is required.'); return; }
+  const size = document.getElementById('itemSize').value.trim();
+  const code = document.getElementById('itemCode').value.trim();
+  const qty = Math.max(0, parseInt(document.getElementById('itemQty').value) || 0);
+  const unit = document.getElementById('itemUnit').value.trim() || 'pcs';
+  const locationId = document.getElementById('itemLocation').value;
+  const notesText = document.getElementById('itemNotes').value.trim();
+
+  if (state.editingItemId) {
+    const item = state.items.find(i => i.id === state.editingItemId);
+    if (!item) return;
+    const oldQty = item.quantity;
+    item.name = name;
+    item.size = size;
+    item.code = code;
+    item.quantity = qty;
+    item.unit = unit;
+    item.locationId = locationId;
+    item.lastUpdated = nowISO();
+    if (notesText && notesText !== (item.notes || []).map(n => n.text).join('\n')) {
+      if (!item.notes) item.notes = [];
+      item.notes.unshift({ id: generateId(), text: notesText, date: nowISO() });
+    }
+    await persist();
+    closeModal('itemModal');
+    await loadData();
+    render();
+    toast('Item updated');
+  } else {
+    const newItem = {
+      id: generateId(),
+      name, size, code,
+      quantity: qty,
+      unit,
+      locationId,
+      notes: notesText ? [{ id: generateId(), text: notesText, date: nowISO() }] : [],
+      lastUpdated: nowISO(),
+      createdAt: nowISO(),
+      updatedAt: nowISO(),
+      isActive: true,
+      // Cloud-ready fields (empty for now):
+      category: null,
+      expiryDate: null,
+      custodian: null
+    };
+    state.items.push(newItem);
+    await persist();
+    closeModal('itemModal');
+    render();
+    toast('Item added');
+  }
+}
+
+// ===== MODALS: LOCATION =====
+function openAddLocation() {
+  state.editingLocationId = null;
+  document.getElementById('locationModalTitle').textContent = 'Add Location';
+  document.getElementById('locName').value = '';
+  document.getElementById('locFloor').value = '';
+  document.getElementById('locNotes').value = '';
+  document.getElementById('locationModal').classList.add('active');
+  document.getElementById('locName').focus();
+}
+
+function editLocation(locId) {
+  const loc = state.locations.find(l => l.id === locId);
+  if (!loc) return;
+  state.editingLocationId = locId;
+  document.getElementById('locationModalTitle').textContent = 'Edit Location';
+  document.getElementById('locName').value = loc.name || '';
+  document.getElementById('locFloor').value = loc.floor || '';
+  document.getElementById('locNotes').value = loc.notes || '';
+  document.getElementById('locationModal').classList.add('active');
+}
+
+async function saveLocation() {
+  const name = document.getElementById('locName').value.trim();
+  if (!name) { alert('Location name is required.'); return; }
+  const floor = document.getElementById('locFloor').value.trim();
+  const notes = document.getElementById('locNotes').value.trim();
+
+  if (state.editingLocationId) {
+    const loc = state.locations.find(l => l.id === state.editingLocationId);
+    if (!loc) return;
+    loc.name = name;
+    loc.floor = floor;
+    loc.notes = notes;
+    loc.updatedAt = nowISO();
+    await persist();
+    closeModal('locationModal');
+    await loadData();
+    render();
+    toast('Location updated');
+  } else {
+    const newLoc = {
+      id: generateId(),
+      name, floor, notes,
+      createdAt: nowISO(),
+      updatedAt: nowISO(),
+      isActive: true
+    };
+    state.locations.push(newLoc);
+    await persist();
+    closeModal('locationModal');
+    render();
+    toast('Location added');
+  }
+}
+
+// ===== NOTES =====
+function openNotes(itemId) {
+  const item = state.items.find(i => i.id === itemId);
+  if (!item) return;
+  state.notesItemId = itemId;
+  document.getElementById('notesItemName').textContent = item.name;
+  renderNotesList();
+  document.getElementById('newNoteInput').value = '';
+  document.getElementById('notesModal').classList.add('active');
+}
+
+function renderNotesList() {
+  const item = state.items.find(i => i.id === state.notesItemId);
+  if (!item) return;
+  const container = document.getElementById('notesListContainer');
+  const notes = item.notes || [];
+  if (notes.length === 0) {
+    container.innerHTML = '<div class="empty" style="padding:12px;">No notes yet.</div>';
+    return;
+  }
+  container.innerHTML = '<div class="notes-list">' + notes.map(n => `
+    <div class="note-item">
+      <div>
+        <div>${escapeHtml(n.text)}</div>
+        <div class="note-date">${formatDate(n.date)}</div>
+      </div>
+      <button class="note-del" onclick="deleteNote('${n.id}')">🗑️</button>
+    </div>
+  `).join('') + '</div>';
+}
+
+async function addNote() {
+  const text = document.getElementById('newNoteInput').value.trim();
+  if (!text) return;
+  const item = state.items.find(i => i.id === state.notesItemId);
+  if (!item) return;
+  if (!item.notes) item.notes = [];
+  item.notes.unshift({ id: generateId(), text, date: nowISO() });
+  item.lastUpdated = nowISO();
+  await persist();
+  document.getElementById('newNoteInput').value = '';
+  renderNotesList();
+  render();
+  toast('Note added');
+}
+
+async function deleteNote(noteId) {
+  const item = state.items.find(i => i.id === state.notesItemId);
+  if (!item) return;
+  if (!confirm('Delete this note?')) return;
+  item.notes = (item.notes || []).filter(n => n.id !== noteId);
+  await persist();
+  renderNotesList();
+  render();
+  toast('Note deleted');
+}
+
+// ===== PERSIST =====
+async function persist() {
+  const data = await repository.load();
+  data.locations = state.locations;
+  data.items = state.items;
+  await repository.save(data);
+}
+
+// ===== TOAST & UNDO =====
+function toast(msg, type = 'success') {
+  const el = document.getElementById('toast');
+  const txt = document.getElementById('toastText');
+  const undoBtn = document.getElementById('undoBtn');
+  txt.textContent = msg;
+  el.className = 'toast active ' + type;
+  undoBtn.style.display = 'none';
+  clearTimeout(el._timeout);
+  el._timeout = setTimeout(() => { el.classList.remove('active'); }, 3000);
+}
+
+function showUndo(msg, undoFn) {
+  const el = document.getElementById('toast');
+  const txt = document.getElementById('toastText');
+  const undoBtn = document.getElementById('undoBtn');
+  txt.textContent = msg;
+  el.className = 'toast active success';
+  undoBtn.style.display = 'inline-block';
+  state.undoAction = undoFn;
+  clearTimeout(state.undoTimeout);
+  clearTimeout(el._timeout);
+  state.undoTimeout = setTimeout(() => {
+    el.classList.remove('active');
+    undoBtn.style.display = 'none';
+    state.undoAction = null;
+  }, UNDO_TIMEOUT_MS);
+}
+
+async function performUndo() {
+  if (!state.undoAction) return;
+  const fn = state.undoAction;
+  state.undoAction = null;
+  document.getElementById('undoBtn').style.display = 'none';
+  document.getElementById('toast').classList.remove('active');
+  clearTimeout(state.undoTimeout);
+  await fn();
+  toast('Undone');
+}
+
+// ===== MODAL HELPERS =====
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+function openHelp() { document.getElementById('helpModal').classList.add('active'); }
+
+// Close modal when clicking background
+document.querySelectorAll('.modal-bg').forEach(bg => {
+  bg.addEventListener('click', e => {
+    if (e.target === bg) bg.classList.remove('active');
+  });
+});
+
+// ===== BACKUP / RESTORE =====
+async function backupData() {
+  const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
+  const data = {
+    appVersion: APP_VERSION,
+    schemaVersion: SCHEMA_VERSION,
+    mosqueId: state.currentMosqueId,
+    mosqueName: mosque ? mosque.name : '',
+    exportedAt: nowISO(),
+    locations: state.locations,
+    items: state.items
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `inventory_${state.currentMosqueId}_${nowISO().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  await repository.setLastBackup(nowISO());
+  updateLastBackupText();
+  toast('Backup downloaded');
+}
+
+function triggerRestore() { document.getElementById('restoreFile').click(); }
+
+async function restoreData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!data.items || !data.locations) { alert('Invalid backup file.'); return; }
+      if (data.mosqueId && data.mosqueId !== state.currentMosqueId) {
+        if (!confirm(`This backup is for "${data.mosqueName}". Restore it into the current mosque?`)) return;
+      }
+      if (!confirm('This will REPLACE all current data for this mosque. Continue?')) return;
+      state.locations = data.locations || [];
+      state.items = data.items || [];
+      await persist();
+      await loadData();
+      render();
+      toast('Data restored');
+    } catch (err) {
+      alert('Error restoring file: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+async function updateLastBackupText() {
+  const last = await repository.getLastBackup();
+  const el = document.getElementById('lastBackupText');
+  if (last) {
+    el.textContent = 'Last backup: ' + formatDate(last);
+    const days = (Date.now() - new Date(last).getTime()) / (1000*60*60*24);
+    if (days > 7) {
+      el.textContent += ' ⚠️ Please backup!';
+      el.style.color = 'var(--danger)';
+    } else {
+      el.style.color = 'var(--muted)';
+    }
+  } else {
+    el.textContent = 'No backup yet — please backup weekly.';
+    el.style.color = 'var(--warning)';
+  }
+}
+
+// ===== PRINT =====
+function printReport() {
+  const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
+  document.getElementById('printMosqueName').textContent = mosque ? mosque.name + ' — Inventory' : 'Inventory';
+  document.getElementById('printDate').textContent = formatDate(nowISO());
+  window.print();
+}
+
+// ===== CSV EXPORT =====
+function exportCSV() {
+  const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
+  const rows = [];
+  rows.push(['Mosque', 'Location', 'Floor', 'Item Name', 'Size', 'Item Code', 'Quantity', 'Unit', 'Notes', 'Last Updated']);
+  state.locations.forEach(loc => {
+    const items = state.items.filter(i => i.locationId === loc.id);
+    items.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    items.forEach(i => {
+      rows.push([
+        mosque.name,
+        loc.name,
+        loc.floor || '',
+        i.name,
+        i.size || '',
+        i.code || '',
+        i.quantity,
+        i.unit || '',
+        (i.notes || []).map(n => n.text).join(' | '),
+        i.lastUpdated ? formatDate(i.lastUpdated) : ''
+      ]);
+    });
+  });
+  // Include unassigned
+  state.items.filter(i => !state.locations.find(l => l.id === i.locationId)).forEach(i => {
+    rows.push([mosque.name, 'Unassigned', '', i.name, i.size || '', i.code || '', i.quantity, i.unit || '', '', i.lastUpdated ? formatDate(i.lastUpdated) : '']);
+  });
+  const csv = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
+  const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `inventory_${state.currentMosqueId}_${nowISO().split('T')[0]}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('CSV exported');
+}
+
+// ===== EVENT LISTENERS =====
+document.getElementById('searchInput').addEventListener('input', e => {
+  state.search = e.target.value;
+  render();
+});
+document.getElementById('sortSelect').addEventListener('change', e => {
+  state.sort = e.target.value;
+  render();
+});
+
+// ESC to close modals
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-bg.active').forEach(m => m.classList.remove('active'));
+  }
+});
+
+// ===== START =====
+init();
+</script>
+</body>
+</html>
