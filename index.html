@@ -6,16 +6,16 @@
 <title>Mosque Store Inventory</title>
 <style>
   :root {
-    --primary: #0d7a4f;
-    --primary-dark: #075e3a;
-    --danger: #dc2626;
-    --warning: #d97706;
-    --bg: #f8fafc;
-    --card: #ffffff;
-    --border: #e2e8f0;
-    --text: #1e293b;
-    --muted: #64748b;
-    --light: #f1f5f9;
+    --primary: #10b981;      /* Hijau yang lebih cerah untuk dark mode */
+    --primary-dark: #059669;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --bg: #0f172a;           /* Latar belakang gelap utama */
+    --card: #1e293b;         /* Latar belakang kad/box */
+    --border: #334155;       /* Warna garisan */
+    --text: #f1f5f9;         /* Warna teks putih lembut */
+    --muted: #94a3b8;        /* Warna teks kelabu */
+    --light: #0f172a;        /* Latar belakang butang secondary */
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -28,14 +28,15 @@
   .container { max-width: 1100px; margin: 0 auto; }
 
   header {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    background: linear-gradient(135deg, #065f46, #064e3b); /* Hijau gelap */
     color: white;
     padding: 20px 24px;
     border-radius: 12px;
     margin-bottom: 20px;
+    border: 1px solid #047857;
   }
   header h1 { font-size: 1.5rem; margin-bottom: 4px; }
-  header p { font-size: 0.9rem; opacity: 0.9; }
+  header p { font-size: 0.9rem; color: #a7f3d0; }
 
   .mosque-selector {
     background: var(--card);
@@ -48,14 +49,14 @@
     gap: 12px;
     flex-wrap: wrap;
   }
-  .mosque-selector label { font-weight: 600; font-size: 0.9rem; }
+  .mosque-selector label { font-weight: 600; font-size: 0.9rem; color: var(--text); }
   .mosque-selector select {
     padding: 10px 14px;
     border: 2px solid var(--primary);
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
-    background: white;
+    background: var(--bg);
     color: var(--text);
     cursor: pointer;
     min-width: 220px;
@@ -79,11 +80,10 @@
     gap: 6px;
     transition: transform 0.15s;
   }
-  .btn:hover { transform: translateY(-1px); }
+  .btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
   .btn-primary { background: var(--primary); color: white; }
-  .btn-secondary { background: var(--light); color: var(--text); border: 1px solid var(--border); }
-  .btn-danger { background: var(--danger); color: white; }
-  .btn-warning { background: var(--warning); color: white; }
+  .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+  .btn-danger { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid var(--danger); }
   .btn-sm { padding: 6px 10px; font-size: 0.8rem; }
 
   .search-bar {
@@ -99,18 +99,25 @@
     border: 1px solid var(--border);
     border-radius: 8px;
     font-size: 1rem;
+    background: var(--card);
+    color: var(--text);
   }
   .search-bar select {
     padding: 12px 16px;
     border: 1px solid var(--border);
     border-radius: 8px;
     font-size: 0.9rem;
-    background: white;
+    background: var(--card);
+    color: var(--text);
     cursor: pointer;
+  }
+  .search-bar input:focus, .search-bar select:focus {
+    outline: none;
+    border-color: var(--primary);
   }
 
   .summary {
-    background: var(--light);
+    background: var(--card);
     padding: 12px 16px;
     border-radius: 8px;
     margin-bottom: 16px;
@@ -120,6 +127,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 8px;
+    border: 1px solid var(--border);
   }
 
   .location-group {
@@ -130,7 +138,7 @@
     overflow: hidden;
   }
   .location-header {
-    background: var(--light);
+    background: rgba(0,0,0,0.2);
     padding: 12px 16px;
     font-weight: 700;
     font-size: 1rem;
@@ -159,18 +167,20 @@
     font-weight: 600;
     font-size: 1.05rem;
     margin-bottom: 4px;
+    color: var(--text);
   }
   .item-meta {
     font-size: 0.85rem;
     color: var(--muted);
   }
   .item-meta .code {
-    background: #e0f2fe;
-    color: #0369a1;
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
     padding: 2px 8px;
     border-radius: 4px;
     font-weight: 600;
     font-size: 0.8rem;
+    border: 1px solid rgba(56, 189, 248, 0.3);
   }
   .item-qty {
     display: flex;
@@ -183,6 +193,7 @@
     border-radius: 8px;
     border: 1px solid var(--border);
     background: var(--light);
+    color: var(--text);
     font-size: 1.2rem;
     font-weight: 700;
     cursor: pointer;
@@ -190,7 +201,7 @@
     align-items: center;
     justify-content: center;
   }
-  .qty-btn:hover { background: #e2e8f0; }
+  .qty-btn:hover { background: var(--border); }
   .qty-input {
     width: 90px;
     padding: 8px 10px;
@@ -199,6 +210,8 @@
     text-align: center;
     font-size: 1rem;
     font-weight: 600;
+    background: var(--bg);
+    color: var(--text);
   }
   .qty-input:focus { border-color: var(--primary); outline: none; }
   .unit { font-size: 0.9rem; color: var(--muted); min-width: 50px; }
@@ -214,7 +227,7 @@
   .modal-bg {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.8);
     display: none;
     align-items: center;
     justify-content: center;
@@ -223,21 +236,23 @@
   }
   .modal-bg.active { display: flex; }
   .modal {
-    background: white;
+    background: var(--card);
     border-radius: 12px;
     padding: 24px;
     width: 100%;
     max-width: 500px;
     max-height: 90vh;
     overflow-y: auto;
+    border: 1px solid var(--border);
   }
-  .modal h3 { margin-bottom: 16px; font-size: 1.2rem; }
+  .modal h3 { margin-bottom: 16px; font-size: 1.2rem; color: var(--text); }
   .modal label {
     display: block;
     font-weight: 600;
     font-size: 0.85rem;
     margin-top: 12px;
     margin-bottom: 4px;
+    color: var(--muted);
   }
   .modal input, .modal select, .modal textarea {
     width: 100%;
@@ -246,6 +261,8 @@
     border-radius: 8px;
     font-size: 0.95rem;
     font-family: inherit;
+    background: var(--bg);
+    color: var(--text);
   }
   .modal input:focus, .modal select:focus, .modal textarea:focus {
     border-color: var(--primary);
@@ -268,26 +285,27 @@
     bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
-    background: var(--text);
-    color: white;
+    background: var(--card);
+    color: var(--text);
     padding: 12px 20px;
     border-radius: 8px;
     font-size: 0.9rem;
     z-index: 2000;
     display: none;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
     align-items: center;
     gap: 12px;
+    border: 1px solid var(--border);
   }
   .toast.active { display: flex; }
-  .toast.success { background: var(--primary); }
-  .toast.error { background: var(--danger); }
+  .toast.success { border-color: var(--primary); }
+  .toast.error { border-color: var(--danger); }
   .toast button {
-    background: rgba(255,255,255,0.2);
+    background: var(--primary);
     color: white;
     border: none;
-    padding: 4px 10px;
-    border-radius: 4px;
+    padding: 6px 12px;
+    border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
     font-size: 0.8rem;
@@ -300,7 +318,7 @@
     border: 1px solid var(--border);
     border-radius: 6px;
     padding: 8px;
-    background: var(--light);
+    background: var(--bg);
   }
   .note-item {
     padding: 6px 8px;
@@ -321,7 +339,7 @@
   }
 
   .help-content h4 { margin-top: 16px; margin-bottom: 8px; color: var(--primary); }
-  .help-content p, .help-content li { font-size: 0.9rem; margin-bottom: 6px; line-height: 1.6; }
+  .help-content p, .help-content li { font-size: 0.9rem; margin-bottom: 6px; line-height: 1.6; color: var(--text); }
   .help-content ol, .help-content ul { padding-left: 20px; }
 
   @media (max-width: 600px) {
@@ -332,17 +350,18 @@
     .mosque-selector select { width: 100%; }
   }
 
+  /* Print mode akan kekal cerah supaya jimat dakwat & senang baca di kertas */
   @media print {
-    body { background: white; padding: 0; }
+    body { background: white; padding: 0; color: black; }
     header, .mosque-selector, .toolbar, .search-bar, .summary,
     .location-actions, .item-actions, .qty-btn, .toast,
     .modal-bg, .btn { display: none !important; }
     .container { max-width: 100%; padding: 0; }
     .location-group { border: none; margin-bottom: 20px; }
-    .location-header { background: white; border-bottom: 2px solid #000; padding: 8px 0; }
-    .item { grid-template-columns: 1fr auto; border-bottom: 1px dotted #999; padding: 6px 0; }
-    .qty-input { border: none; width: auto; text-align: right; font-weight: 700; }
-    .print-header { display: block !important; margin-bottom: 20px; }
+    .location-header { background: white; border-bottom: 2px solid #000; color: black; }
+    .item { grid-template-columns: 1fr auto; border-bottom: 1px dotted #999; padding: 6px 0; color: black; }
+    .qty-input { border: none; width: auto; text-align: right; font-weight: 700; color: black; background: transparent; }
+    .print-header { display: block !important; margin-bottom: 20px; color: black; }
     .print-header h2 { font-size: 1.4rem; }
     .print-header p { font-size: 0.85rem; color: #555; }
   }
@@ -508,17 +527,9 @@
 
 <script>
 // ============================================================
-// MOSQUE STORE INVENTORY - LITE v1.0
-// ============================================================
-// Cloud-ready architecture:
-// - Repository Pattern (swap LocalStorage for Cloud later)
-// - Async data functions (ready for fetch/Supabase)
-// - UUID ids, ISO timestamps (Supabase compatible)
-// - Soft delete (isActive flag)
-// - Version number in backup
+// MOSQUE STORE INVENTORY - LITE v1.0 (DARK MODE)
 // ============================================================
 
-// ===== CONFIG: Change mosque names here =====
 const MOSQUES = [
   { id: 'alkhair', name: 'Masjid Al-Khair' },
   { id: 'aliman',  name: 'Masjid Al-Iman' },
@@ -529,7 +540,6 @@ const APP_VERSION = '1.0.0';
 const SCHEMA_VERSION = 1;
 const UNDO_TIMEOUT_MS = 5000;
 
-// ===== STATE =====
 let state = {
   currentMosqueId: null,
   locations: [],
@@ -543,7 +553,6 @@ let state = {
   undoTimeout: null
 };
 
-// ===== UTILITIES =====
 function generateId() {
   return 'id-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
 }
@@ -563,7 +572,6 @@ function escapeHtml(s) {
   return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-// ===== REPOSITORY (swap for CloudRepository later) =====
 class LocalStorageRepository {
   constructor(mosqueId) {
     this.key = 'mosqueInventory_' + mosqueId;
@@ -598,9 +606,7 @@ class LocalStorageRepository {
 }
 let repository = null;
 
-// ===== INIT =====
 async function init() {
-  // Populate mosque dropdown
   const sel = document.getElementById('mosqueSelect');
   sel.innerHTML = '';
   MOSQUES.forEach(m => {
@@ -609,7 +615,6 @@ async function init() {
     opt.textContent = m.name;
     sel.appendChild(opt);
   });
-  // Try to restore last mosque from session
   const lastMosque = sessionStorage.getItem('lastMosqueId') || MOSQUES[0].id;
   sel.value = lastMosque;
   state.currentMosqueId = lastMosque;
@@ -632,12 +637,10 @@ async function loadData() {
   state.items = data.items.filter(i => i.isActive !== false);
 }
 
-// ===== RENDER =====
 function render() {
   const list = document.getElementById('itemList');
   list.innerHTML = '';
 
-  // Filter by search
   const q = state.search.toLowerCase().trim();
   let filteredItems = state.items;
   if (q) {
@@ -648,7 +651,6 @@ function render() {
     );
   }
 
-  // Summary
   const totalQty = filteredItems.reduce((s, i) => s + (Number(i.quantity) || 0), 0);
   document.getElementById('summaryText').textContent =
     `${filteredItems.length} item(s), ${totalQty} total quantity`;
@@ -661,7 +663,6 @@ function render() {
     return;
   }
 
-  // Group by location or flat
   if (state.sort === 'location') {
     const byLoc = {};
     state.locations.forEach(l => byLoc[l.id] = []);
@@ -682,7 +683,6 @@ function render() {
       renderLocationGroup(list, { id: null, name: '⚠️ Unassigned', floor: '' }, unassigned);
     }
   } else {
-    // Flat list
     const sorted = [...filteredItems];
     if (state.sort === 'name') sorted.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
     if (state.sort === 'code') sorted.sort((a, b) => (a.code || 'zzz').localeCompare(b.code || 'zzz'));
@@ -754,7 +754,6 @@ function renderItem(item) {
   return el;
 }
 
-// ===== ITEM ACTIONS =====
 async function changeQty(itemId, delta) {
   const item = state.items.find(i => i.id === itemId);
   if (!item) return;
@@ -806,7 +805,6 @@ async function deleteItem(itemId) {
   });
 }
 
-// ===== LOCATION ACTIONS =====
 async function deleteLocation(locId) {
   const loc = state.locations.find(l => l.id === locId);
   if (!loc) return;
@@ -824,7 +822,6 @@ async function deleteLocation(locId) {
   toast(`Location deleted: ${loc.name}`);
 }
 
-// ===== MODALS: ITEM =====
 function openAddItem() {
   if (state.locations.length === 0) {
     alert('Please add a location first.');
@@ -883,7 +880,6 @@ async function saveItem() {
   if (state.editingItemId) {
     const item = state.items.find(i => i.id === state.editingItemId);
     if (!item) return;
-    const oldQty = item.quantity;
     item.name = name;
     item.size = size;
     item.code = code;
@@ -912,7 +908,6 @@ async function saveItem() {
       createdAt: nowISO(),
       updatedAt: nowISO(),
       isActive: true,
-      // Cloud-ready fields (empty for now):
       category: null,
       expiryDate: null,
       custodian: null
@@ -925,7 +920,6 @@ async function saveItem() {
   }
 }
 
-// ===== MODALS: LOCATION =====
 function openAddLocation() {
   state.editingLocationId = null;
   document.getElementById('locationModalTitle').textContent = 'Add Location';
@@ -981,7 +975,6 @@ async function saveLocation() {
   }
 }
 
-// ===== NOTES =====
 function openNotes(itemId) {
   const item = state.items.find(i => i.id === itemId);
   if (!item) return;
@@ -1038,7 +1031,6 @@ async function deleteNote(noteId) {
   toast('Note deleted');
 }
 
-// ===== PERSIST =====
 async function persist() {
   const data = await repository.load();
   data.locations = state.locations;
@@ -1046,7 +1038,6 @@ async function persist() {
   await repository.save(data);
 }
 
-// ===== TOAST & UNDO =====
 function toast(msg, type = 'success') {
   const el = document.getElementById('toast');
   const txt = document.getElementById('toastText');
@@ -1086,18 +1077,15 @@ async function performUndo() {
   toast('Undone');
 }
 
-// ===== MODAL HELPERS =====
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 function openHelp() { document.getElementById('helpModal').classList.add('active'); }
 
-// Close modal when clicking background
 document.querySelectorAll('.modal-bg').forEach(bg => {
   bg.addEventListener('click', e => {
     if (e.target === bg) bg.classList.remove('active');
   });
 });
 
-// ===== BACKUP / RESTORE =====
 async function backupData() {
   const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
   const data = {
@@ -1157,7 +1145,7 @@ async function updateLastBackupText() {
     const days = (Date.now() - new Date(last).getTime()) / (1000*60*60*24);
     if (days > 7) {
       el.textContent += ' ⚠️ Please backup!';
-      el.style.color = 'var(--danger)';
+      el.style.color = 'var(--warning)'; 
     } else {
       el.style.color = 'var(--muted)';
     }
@@ -1167,7 +1155,6 @@ async function updateLastBackupText() {
   }
 }
 
-// ===== PRINT =====
 function printReport() {
   const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
   document.getElementById('printMosqueName').textContent = mosque ? mosque.name + ' — Inventory' : 'Inventory';
@@ -1175,7 +1162,6 @@ function printReport() {
   window.print();
 }
 
-// ===== CSV EXPORT =====
 function exportCSV() {
   const mosque = MOSQUES.find(m => m.id === state.currentMosqueId);
   const rows = [];
@@ -1198,7 +1184,6 @@ function exportCSV() {
       ]);
     });
   });
-  // Include unassigned
   state.items.filter(i => !state.locations.find(l => l.id === i.locationId)).forEach(i => {
     rows.push([mosque.name, 'Unassigned', '', i.name, i.size || '', i.code || '', i.quantity, i.unit || '', '', i.lastUpdated ? formatDate(i.lastUpdated) : '']);
   });
@@ -1213,7 +1198,6 @@ function exportCSV() {
   toast('CSV exported');
 }
 
-// ===== EVENT LISTENERS =====
 document.getElementById('searchInput').addEventListener('input', e => {
   state.search = e.target.value;
   render();
@@ -1223,14 +1207,12 @@ document.getElementById('sortSelect').addEventListener('change', e => {
   render();
 });
 
-// ESC to close modals
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     document.querySelectorAll('.modal-bg.active').forEach(m => m.classList.remove('active'));
   }
 });
 
-// ===== START =====
 init();
 </script>
 </body>
