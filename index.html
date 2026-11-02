@@ -351,7 +351,13 @@
   }
 
   @media print {
-    body { background: white; padding: 0; color: black; }
+    @page { margin: 15mm; } /* This is to make a better margin on the paper. */
+    body { 
+      background: white; 
+      padding: 0; 
+      color: black; 
+      -webkit-print-color-adjust: exact; 
+          }
     header, .mosque-selector, .toolbar, .search-bar, .summary,
     .location-actions, .item-actions, .qty-btn, .toast,
     .modal-bg, .btn { display: none !important; }
@@ -363,6 +369,8 @@
     .print-header { display: block !important; margin-bottom: 20px; color: black; }
     .print-header h2 { font-size: 1.4rem; }
     .print-header p { font-size: 0.85rem; color: #555; }
+     /* Code to hide browser URL & Date */
+    .header, .footer { display: none !important; }
   }
   .print-header { display: none; }
 </style>
