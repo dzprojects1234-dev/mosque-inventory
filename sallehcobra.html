@@ -943,11 +943,6 @@
     // Apply saiz font yang disimpan
     document.documentElement.style.setProperty('--font-scale', fontScale);
 
-    // Apply saiz font yang disimpan
-    if (fontScale !== 1) {
-      document.body.style.fontSize = (12 * fontScale) + 'pt';
-    }
-
     // ===== PROGRESS BAR =====
     window.addEventListener('scroll', function() {
       const scrollTop = window.scrollY;
