@@ -568,10 +568,9 @@
       .toolbar button { width: 44px; height: 44px; font-size: 17px; }
     }
 
-    /* ===== PRINT ===== */
-
+    
         /* ===== FONT SIZE SCALING ===== */
-    body {
+    :root {
       --font-scale: 1;
     }
     .page {
@@ -653,6 +652,7 @@
       .toolbar, #progressBar, #topBtn { display: none !important; }
     }
   </style>
+
 </head>
 <body class="dark">
 
@@ -925,9 +925,9 @@
       if (saved) fontScale = parseFloat(saved);
     } catch(e) {}
 
-      function ubahFont(delta) {
+          function ubahFont(delta) {
       fontScale = Math.max(0.7, Math.min(1.6, fontScale + delta * 0.1));
-      document.body.style.setProperty('--font-scale', fontScale);
+      document.documentElement.style.setProperty('--font-scale', fontScale);
       try { localStorage.setItem('fontScale', fontScale); } catch(e) {}
 
       // Feedback visual pada butang
@@ -941,7 +941,7 @@
     }
 
     // Apply saiz font yang disimpan
-    document.body.style.setProperty('--font-scale', fontScale);
+    document.documentElement.style.setProperty('--font-scale', fontScale);
 
     // Apply saiz font yang disimpan
     if (fontScale !== 1) {
