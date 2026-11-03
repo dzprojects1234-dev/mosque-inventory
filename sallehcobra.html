@@ -28,6 +28,7 @@
       font-size: 12pt;
       -webkit-font-smoothing: antialiased;
       counter-reset: page;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
     /* ===== PAGE ===== */
@@ -43,6 +44,7 @@
       display: flex;
       flex-direction: column;
       counter-increment: page;
+      transition: background 0.3s ease;
     }
 
     /* ===== ORNAMENT ===== */
@@ -418,6 +420,137 @@
       margin-top: 0.8cm;
     }
 
+    /* ===== FLOATING TOOLBAR ===== */
+    .toolbar {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 9999;
+    }
+    .toolbar button {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1px solid var(--accent);
+      background: #fffdf9;
+      color: var(--primary);
+      font-size: 22px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+      transition: transform 0.15s ease, background 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .toolbar button:hover { transform: scale(1.08); }
+    .toolbar button:active { transform: scale(0.95); }
+
+    /* ===== DARK MODE ===== */
+    body.dark {
+      --primary: #e8d9a8;
+      --accent: #d4a838;
+      --bg: #1a1a1a;
+      --text: #e0e0e0;
+      --border: #3a3a3a;
+      --muted: #999;
+      --danger: #e07070;
+      background: #111 !important;
+    }
+    body.dark .page {
+      background: #1e1e1e !important;
+      color: #e0e0e0;
+    }
+    body.dark .cover {
+      background: linear-gradient(160deg, #1e1e1e 0%, #2a2418 100%) !important;
+    }
+    body.dark .dedication-page {
+      background: linear-gradient(160deg, #1e1e1e 0%, #24201a 100%) !important;
+    }
+    body.dark .arabic { background: rgba(212,168,56,0.08); color: #e8d9a8; }
+    body.dark .transliterasi { background: #2a2a2a; color: #ccc; }
+    body.dark .transliterasi strong { color: #e8d9a8; }
+    body.dark .terjemahan { color: #bbb; }
+    body.dark .terjemahan::before { color: #e8d9a8; }
+    body.dark .penafian { background: #2a2620; color: #c8c8c8; }
+    body.dark .amalan-box { background: linear-gradient(135deg, #2a2a2a, #1e1e1e); }
+    body.dark .amalan-box p { color: #e8d9a8; }
+    body.dark .sources-list li { border-bottom-color: #3a3a3a; }
+    body.dark .sources-list .source-title { color: #e8d9a8; }
+    body.dark h2.section-title { color: #e8d9a8; }
+    body.dark .page .page-number { background: #1e1e1e; color: #999; }
+    body.dark .toc-list .toc-title { color: #e8d9a8; }
+    body.dark .toc-list .toc-page { color: #d4a838; }
+    body.dark .kolofon { color: #c8c8c8; }
+    body.dark .kolofon .k-heading { color: #e8d9a8; }
+    body.dark .dedication-page .dedication-text { color: #d8d8d8; }
+    body.dark .dedication-page .dedication-text strong { color: #e8d9a8; }
+    body.dark .dedication-page .arabic-dedication { color: #e8d9a8; }
+    body.dark .toolbar button {
+      background: #2a2a2a;
+      color: #e8d9a8;
+      border-color: #d4a838;
+    }
+
+    /* ===== PHONE / SMALL SCREEN ===== */
+    @media screen and (max-width: 820px) {
+      body {
+        padding: 8px;
+        font-size: 11pt;
+      }
+      .page {
+        width: 100% !important;
+        min-height: auto !important;
+        padding: 1.2cm 1cm 1.4cm !important;
+        margin: 0 auto 14px !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+      }
+      .page::before, .page::after {
+        width: 34px; height: 34px;
+        top: 6px; left: 6px;
+      }
+      .page::after { top: auto; left: auto; bottom: 6px; right: 6px; }
+      .page .page-number {
+        bottom: 0.5cm;
+        font-size: 8.5pt;
+      }
+
+      .cover { min-height: auto !important; padding: 2cm 1cm !important; }
+      .cover .bismillah { font-size: 22pt; margin-bottom: 1.2cm; }
+      .cover h1 { font-size: 20pt; }
+      .cover .subtitle { font-size: 11pt; margin-bottom: 1.2cm; }
+      .cover .arabic-title { font-size: 16pt; }
+      .cover .dedication-badge { font-size: 10pt; padding: 0.3cm 0.8cm; }
+      .cover .author { margin-top: 1.2cm; font-size: 10pt; }
+
+      .dedication-page { padding: 1.5cm 1cm !important; }
+      .dedication-page .arabic-dedication { font-size: 15pt; }
+      .dedication-page .dedication-text { font-size: 11pt; line-height: 1.8; text-align: left; }
+      .dedication-page .signature { margin-top: 1cm; }
+
+      h2.section-title { font-size: 14pt; margin-bottom: 0.6cm; }
+      .arabic-heading { font-size: 15pt; margin-bottom: 0.6cm; }
+      .arabic { font-size: 19pt; line-height: 2.1; padding: 0.4cm 0.6cm; }
+      .transliterasi { font-size: 10pt; padding: 0.4cm 0.6cm; }
+      .terjemahan { font-size: 10.5pt; }
+      .nota-kaki { font-size: 8pt; }
+      .penafian { font-size: 8pt; }
+      .amalan-box { padding: 0.8cm 0.9cm; }
+      .amalan-box p { font-size: 11pt; }
+      .amalan-box .aamiin { font-size: 16pt; }
+      .sources-list li { font-size: 10pt; }
+      .sources-list .source-detail { font-size: 9pt; }
+      .kolofon { font-size: 9pt; }
+      .kolofon .k-title { font-size: 15pt; }
+      .toc-list li { font-size: 10.5pt; padding: 0.3cm 0; }
+
+      .toolbar { bottom: 14px; right: 14px; gap: 8px; }
+      .toolbar button { width: 46px; height: 46px; font-size: 19px; }
+    }
+
     /* ===== PRINT ===== */
     @media print {
       body { background: #fff; counter-reset: page; }
@@ -437,6 +570,7 @@
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
+      .toolbar { display: none !important; }
     }
   </style>
 </head>
@@ -459,81 +593,35 @@
   <!-- ==================== PAGE: PENGHARGAAN KHAS ==================== -->
   <div class="page dedication-page">
     <div class="ornament-top">❖ ❖ ❖</div>
-
-    <div class="arabic-dedication">
-      إِلَى صَدِيقِي الْمُحْتَرَمِ
-    </div>
-
-    <h2 class="section-title" style="border-bottom:none; font-size:16pt; margin-bottom:0.6cm;">
-      Penghargaan Khas
-    </h2>
-
+    <div class="arabic-dedication">إِلَى صَدِيقِي الْمُحْتَرَمِ</div>
+    <h2 class="section-title" style="border-bottom:none; font-size:16pt; margin-bottom:0.6cm;">Penghargaan Khas</h2>
     <div class="divider-ornament"></div>
-
     <p class="dedication-text">
       Buku kecil ini disusun dengan penuh rasa kasih dan hormat, sebagai tanda penghargaan kepada seorang sahabat yang budiman — <strong>Encik Salleh Cobra</strong>.
     </p>
-
     <p class="dedication-text">
       Kiriman pesanan yang penuh keberkatan pada pagi itu telah menyentuh hati, dan menjadi ilham kepada penyusunan doa-doa pilihan ini. Mudah-mudahan setiap huruf yang tercatat di sini menjadi <em>amal jariah</em> yang berterusan mengalir pahalanya, dan menjadi penyebab dipermudahkan segala urusan di dunia dan di akhirat.
     </p>
-
     <p class="dedication-text">
       Semoga Allah S.W.T. memberkati Encik Salleh Cobra, keluarga, dan seluruh sahabat handai — dengan keberkatan, kesihatan, rezeki yang halal lagi melimpah, serta husnul khatimah. <em>Aamiin Ya Rabbal 'Alamin.</em>
     </p>
-
     <div class="divider-ornament"></div>
-
-    <p class="signature">
-      — Dengan penuh takzim,<br>
-      Sahabat anda
-    </p>
-
+    <p class="signature">— Dengan penuh takzim,<br>Sahabat anda</p>
     <div class="page-number"></div>
   </div>
 
   <!-- ==================== PAGE: DAFTAR ISI ==================== -->
   <div class="page">
     <h2 class="section-title">Daftar Isi</h2>
-
     <ul class="toc-list">
-      <li>
-        <span class="toc-title">Penghargaan Khas</span>
-        <span class="toc-dots"></span>
-        <span class="toc-page">2</span>
-      </li>
-      <li>
-        <span class="toc-title">Pembuka — Selawat Ke Atas Nabi ﷺ</span>
-        <span class="toc-dots"></span>
-        <span class="toc-page">3</span>
-      </li>
-      <li>
-        <span class="toc-title">Doa Perlindungan Diri</span>
-        <span class="toc-dots"></span>
-        <span class="toc-page">4</span>
-      </li>
-      <li>
-        <span class="toc-title">Doa Memohon Kemudahan</span>
-        <span class="toc-dots"></span>
-        <span class="toc-page">5</span>
-      </li>
-      <li>
-        <span class="toc-title">Amalan &amp; Kaifiyat</span>
-        <span class="toc-dots"></span>
-        <span class="toc-page">6</span>
-      </li>
-      <li>
-        <span class="toc-title">Sumber Rujukan</span>
-        <span class="toc-dots"></span>
-        <span class="toc-page">7</span>
-      </li>
-      <li>
-        <span class="toc-title">Kolofon</span>
-        <span class="toc-dots"></span>
-        <span class="toc-page">8</span>
-      </li>
+      <li><span class="toc-title">Penghargaan Khas</span><span class="toc-dots"></span><span class="toc-page">2</span></li>
+      <li><span class="toc-title">Pembuka — Selawat Ke Atas Nabi ﷺ</span><span class="toc-dots"></span><span class="toc-page">3</span></li>
+      <li><span class="toc-title">Doa Perlindungan Diri</span><span class="toc-dots"></span><span class="toc-page">4</span></li>
+      <li><span class="toc-title">Doa Memohon Kemudahan</span><span class="toc-dots"></span><span class="toc-page">5</span></li>
+      <li><span class="toc-title">Amalan &amp; Kaifiyat</span><span class="toc-dots"></span><span class="toc-page">6</span></li>
+      <li><span class="toc-title">Sumber Rujukan</span><span class="toc-dots"></span><span class="toc-page">7</span></li>
+      <li><span class="toc-title">Kolofon</span><span class="toc-dots"></span><span class="toc-page">8</span></li>
     </ul>
-
     <div class="nota-kaki">
       <div class="label">Nota</div>
       <ol>
@@ -541,7 +629,6 @@
         <li>Nombor halaman akan berubah secara automatik apabila kandungan ditambah atau dibuang.</li>
       </ol>
     </div>
-
     <div class="page-number"></div>
   </div>
 
@@ -636,9 +723,7 @@
   <div class="page">
     <h2 class="section-title">Amalan &amp; Kaifiyat</h2>
     <div class="amalan-box">
-      <p>
-        Amalkan doa ini setiap hari, <em>in sya Allah</em> urusan anda akan dipermudahkan oleh Allah S.W.T.
-      </p>
+      <p>Amalkan doa ini setiap hari, <em>in sya Allah</em> urusan anda akan dipermudahkan oleh Allah S.W.T.</p>
       <span class="aamiin">آمِين</span>
     </div>
     <p style="font-size:11pt; color:#555; text-align:center; font-style:italic;">
@@ -661,7 +746,6 @@
   <!-- ==================== PAGE: SUMBER ==================== -->
   <div class="page">
     <h2 class="section-title">Sumber Rujukan</h2>
-
     <ul class="sources-list">
       <li>
         <span class="source-title">1. Doa Perlindungan Diri (Bismillahilladzi...)</span>
@@ -676,14 +760,10 @@
         <span class="source-detail"><em>Sahih al-Bukhari</em> (No. 3370); <em>Sahih Muslim</em> (No. 406).</span>
       </li>
     </ul>
-
     <div style="margin-top:1.5cm; padding:0.9cm 1.1cm; background:#f4efe0; border:1px solid var(--accent); border-left:6px solid var(--danger); border-radius:4px; font-size:10pt; color:#444; line-height:1.75;">
-      <div style="font-weight:700; color:var(--danger); letter-spacing:1px; text-transform:uppercase; font-size:9.5pt; margin-bottom:0.3cm;">
-        ⚠ Nota Penting
-      </div>
+      <div style="font-weight:700; color:var(--danger); letter-spacing:1px; text-transform:uppercase; font-size:9.5pt; margin-bottom:0.3cm;">⚠ Nota Penting</div>
       Rujukan hadis yang saya berikan adalah berdasarkan ingatan dan pengetahuan umum. Sila semak semula dengan kitab hadis asal atau laman seperti <strong>sunnah.com</strong> untuk memastikan nombor hadis dan status tepat sebelum disebarkan secara meluas.
     </div>
-
     <div class="page-number"></div>
   </div>
 
@@ -693,29 +773,22 @@
       <div class="kolofon">
         <div class="k-title">كُلُّ عَامٍ وَأَنْتُمْ بِخَيْرٍ</div>
         <div class="k-line"></div>
-
         <div class="k-heading">Kolofon</div>
-
         <p style="margin-top:0.5cm;">
           <strong style="color:var(--primary);">Doa-Doa Pilihan</strong><br>
           <em>Susunan Profesional — Teks Arab, Terjemahan &amp; Nota Kaki Hadis</em>
         </p>
-
         <div class="k-line"></div>
-
         <p style="font-size:10.5pt; color:#444;">
           Dihadiahkan dengan penuh kasih dan hormat kepada<br>
           <strong style="color:var(--accent); font-size:12pt;">Encik Salleh Cobra</strong><br>
           <span style="font-style:italic; font-size:10pt;">sebagai tanda penghargaan atas kiriman pesanan yang penuh keberkatan.</span>
         </p>
-
         <div class="k-line"></div>
-
         <p style="font-size:10pt; color:#555;">
           Disusun pada tahun <strong>Rabu, 4 November 2026</strong><br>
           Edisi Peribadi — Untuk Kegunaan Sahabat Handai
         </p>
-
         <p class="k-meta">
           Semua doa dan rujukan hadis disusun berdasarkan kitab-kitab mu'tabar.<br>
           Pembaca disarankan merujuk kepada guru dan ahli ilmu untuk pengesahan.<br><br>
@@ -725,6 +798,53 @@
     </div>
     <div class="page-number"></div>
   </div>
+
+  <!-- ==================== TOOLBAR ==================== -->
+  <div class="toolbar no-print">
+    <button onclick="toggleDark()" title="Mod Gelap / Cerah" id="darkBtn">🌙</button>
+    <button onclick="simpanPDF()" title="Cara Simpan PDF">💾</button>
+  </div>
+
+  <script>
+    // ===== DARK MODE =====
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+      const btn = document.getElementById('darkBtn');
+      const isDark = document.body.classList.contains('dark');
+      btn.textContent = isDark ? '☀️' : '🌙';
+      try { localStorage.setItem('darkMode', isDark ? '1' : '0'); } catch(e) {}
+    }
+
+    // Baca pilihan yang disimpan
+    (function() {
+      try {
+        if (localStorage.getItem('darkMode') === '1') {
+          document.body.classList.add('dark');
+          document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('darkBtn');
+            if (btn) btn.textContent = '☀️';
+          });
+        }
+      } catch(e) {}
+    })();
+
+    // ===== ARAHAN SIMPAN PDF =====
+    function simpanPDF() {
+      alert(
+        "📄 CARA SIMPAN SEBAGAI PDF\n\n" +
+        "📱 Di telefon (Chrome / Safari):\n" +
+        "   1. Tekan menu browser (⋮ atau ⇪)\n" +
+        "   2. Pilih 'Cetak' atau 'Print'\n" +
+        "   3. Pilih 'Save as PDF'\n" +
+        "   4. Pastikan 'Background graphics' ON\n\n" +
+        "💻 Di komputer:\n" +
+        "   1. Tekan Ctrl + P (Mac: Cmd + P)\n" +
+        "   2. Pilih 'Save as PDF'\n" +
+        "   3. Pastikan 'Background graphics' ON\n\n" +
+        "⚠ Tanpa 'Background graphics', warna & ornamen akan hilang!"
+      );
+    }
+  </script>
 
 </body>
 </html>
