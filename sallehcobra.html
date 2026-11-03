@@ -20,6 +20,8 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html { scroll-behavior: smooth; }
+
     body {
       font-family: 'Lora', Georgia, serif;
       background: #e8e4db;
@@ -420,6 +422,18 @@
       margin-top: 0.8cm;
     }
 
+    /* ===== PROGRESS BAR ===== */
+    #progressBar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #b8860b, #d4a838);
+      width: 0%;
+      z-index: 99999;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 8px rgba(184,134,11,0.6);
+    }
+
     /* ===== FLOATING TOOLBAR ===== */
     .toolbar {
       position: fixed;
@@ -437,7 +451,7 @@
       border: 1px solid var(--accent);
       background: #fffdf9;
       color: var(--primary);
-      font-size: 22px;
+      font-size: 20px;
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(0,0,0,0.18);
       transition: transform 0.15s ease, background 0.2s ease;
@@ -445,11 +459,14 @@
       align-items: center;
       justify-content: center;
       line-height: 1;
+      font-weight: 700;
     }
     .toolbar button:hover { transform: scale(1.08); }
     .toolbar button:active { transform: scale(0.95); }
 
-    /* ===== DARK MODE ===== */
+    #topBtn { display: none; }
+
+    /* ===== DARK MODE (DEFAULT) ===== */
     body.dark {
       --primary: #e8d9a8;
       --accent: #d4a838;
@@ -458,7 +475,7 @@
       --border: #3a3a3a;
       --muted: #999;
       --danger: #e07070;
-      background: #111 !important;
+      background: #0e0e0e !important;
     }
     body.dark .page {
       background: #1e1e1e !important;
@@ -506,7 +523,7 @@
         min-height: auto !important;
         padding: 1.2cm 1cm 1.4cm !important;
         margin: 0 auto 14px !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
       }
       .page::before, .page::after {
         width: 34px; height: 34px;
@@ -548,7 +565,7 @@
       .toc-list li { font-size: 10.5pt; padding: 0.3cm 0; }
 
       .toolbar { bottom: 14px; right: 14px; gap: 8px; }
-      .toolbar button { width: 46px; height: 46px; font-size: 19px; }
+      .toolbar button { width: 44px; height: 44px; font-size: 17px; }
     }
 
     /* ===== PRINT ===== */
@@ -570,11 +587,14 @@
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
-      .toolbar { display: none !important; }
+      .toolbar, #progressBar, #topBtn { display: none !important; }
     }
   </style>
 </head>
-<body>
+<body class="dark">
+
+  <!-- ===== PROGRESS BAR ===== -->
+  <div id="progressBar"></div>
 
   <!-- ==================== COVER ==================== -->
   <div class="page cover">
@@ -801,12 +821,32 @@
 
   <!-- ==================== TOOLBAR ==================== -->
   <div class="toolbar no-print">
-    <button onclick="toggleDark()" title="Mod Gelap / Cerah" id="darkBtn">🌙</button>
-    <button onclick="simpanPDF()" title="Cara Simpan PDF">💾</button>
+    <button onclick="toggleDark()" title="Mod Cerah / Gelap" id="darkBtn">☀️</button>
+    <button onclick="ubahFont(1)" title="Besarkan Tulisan">A+</button>
+    <button onclick="ubahFont(-1)" title="Kecilkan Tulisan">A−</button>
+    <button onclick="kongsiBuku()" title="Kongsi Buku">📤</button>
+    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Ke Atas" id="topBtn">↑</button>
   </div>
 
   <script>
-    // ===== DARK MODE =====
+    // ===== DEFAULT: DARK MODE =====
+    // Body dah ada class "dark" secara default.
+    // Kalau user pilih cerah sebelum ini, buang class "dark".
+    (function() {
+      try {
+        if (localStorage.getItem('darkMode') === '0') {
+          document.body.classList.remove('dark');
+        }
+      } catch(e) {}
+      // Set ikon butang selepas DOM sedia
+      document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('darkBtn');
+        const isDark = document.body.classList.contains('dark');
+        if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+      });
+    })();
+
+    // ===== TOGGLE DARK / LIGHT =====
     function toggleDark() {
       document.body.classList.toggle('dark');
       const btn = document.getElementById('darkBtn');
@@ -815,34 +855,57 @@
       try { localStorage.setItem('darkMode', isDark ? '1' : '0'); } catch(e) {}
     }
 
-    // Baca pilihan yang disimpan
-    (function() {
-      try {
-        if (localStorage.getItem('darkMode') === '1') {
-          document.body.classList.add('dark');
-          document.addEventListener('DOMContentLoaded', function() {
-            const btn = document.getElementById('darkBtn');
-            if (btn) btn.textContent = '☀️';
-          });
-        }
-      } catch(e) {}
-    })();
+    // ===== UBAH SAIZ FONT =====
+    let fontScale = 1;
+    try {
+      const saved = localStorage.getItem('fontScale');
+      if (saved) fontScale = parseFloat(saved);
+    } catch(e) {}
 
-    // ===== ARAHAN SIMPAN PDF =====
-    function simpanPDF() {
-      alert(
-        "📄 CARA SIMPAN SEBAGAI PDF\n\n" +
-        "📱 Di telefon (Chrome / Safari):\n" +
-        "   1. Tekan menu browser (⋮ atau ⇪)\n" +
-        "   2. Pilih 'Cetak' atau 'Print'\n" +
-        "   3. Pilih 'Save as PDF'\n" +
-        "   4. Pastikan 'Background graphics' ON\n\n" +
-        "💻 Di komputer:\n" +
-        "   1. Tekan Ctrl + P (Mac: Cmd + P)\n" +
-        "   2. Pilih 'Save as PDF'\n" +
-        "   3. Pastikan 'Background graphics' ON\n\n" +
-        "⚠ Tanpa 'Background graphics', warna & ornamen akan hilang!"
-      );
+    function ubahFont(delta) {
+      fontScale = Math.max(0.75, Math.min(1.5, fontScale + delta * 0.1));
+      document.body.style.fontSize = (12 * fontScale) + 'pt';
+      try { localStorage.setItem('fontScale', fontScale); } catch(e) {}
+    }
+
+    // Apply saiz font yang disimpan
+    if (fontScale !== 1) {
+      document.body.style.fontSize = (12 * fontScale) + 'pt';
+    }
+
+    // ===== PROGRESS BAR =====
+    window.addEventListener('scroll', function() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      const percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      document.getElementById('progressBar').style.width = percent + '%';
+
+      // Tunjuk / sembunyi butang ke atas
+      const topBtn = document.getElementById('topBtn');
+      if (topBtn) {
+        topBtn.style.display = scrollTop > 500 ? 'flex' : 'none';
+      }
+    });
+
+    // ===== KONGSI BUKU =====
+    function kongsiBuku() {
+      const shareData = {
+        title: 'Doa-Doa Pilihan — Untuk Encik Salleh Cobra',
+        text: 'Buku doa hadiah untuk sahabat — baca di sini:',
+        url: window.location.href
+      };
+
+      if (navigator.share) {
+        navigator.share(shareData).catch(function() {});
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href).then(function() {
+          alert('✅ Link telah disalin!\n\nBoleh paste di WhatsApp, Telegram, atau mana-mana app untuk kongsi.');
+        }).catch(function() {
+          alert('Link buku ini:\n\n' + window.location.href);
+        });
+      } else {
+        alert('Link buku ini:\n\n' + window.location.href);
+      }
     }
   </script>
 
