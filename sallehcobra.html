@@ -569,6 +569,69 @@
     }
 
     /* ===== PRINT ===== */
+
+        /* ===== FONT SIZE SCALING ===== */
+    body {
+      --font-scale: 1;
+    }
+    .page {
+      font-size: calc(12pt * var(--font-scale));
+      transition: font-size 0.2s ease;
+    }
+    .page h2.section-title { font-size: calc(17pt * var(--font-scale)); }
+    .page .arabic-heading { font-size: calc(20pt * var(--font-scale)); }
+    .page .cover .bismillah { font-size: calc(30pt * var(--font-scale)); }
+    .page .cover h1 { font-size: calc(26pt * var(--font-scale)); }
+    .page .cover .subtitle { font-size: calc(13pt * var(--font-scale)); }
+    .page .cover .arabic-title { font-size: calc(22pt * var(--font-scale)); }
+    .page .cover .dedication-badge { font-size: calc(11pt * var(--font-scale)); }
+    .page .cover .author { font-size: calc(11pt * var(--font-scale)); }
+    .page .arabic { font-size: calc(24pt * var(--font-scale)); }
+    .page .transliterasi { font-size: calc(11pt * var(--font-scale)); }
+    .page .terjemahan { font-size: calc(11.5pt * var(--font-scale)); }
+    .page .nota-kaki { font-size: calc(8.5pt * var(--font-scale)); }
+    .page .nota-kaki .label { font-size: calc(9pt * var(--font-scale)); }
+    .page .penafian { font-size: calc(8.5pt * var(--font-scale)); }
+    .page .amalan-box p { font-size: calc(12pt * var(--font-scale)); }
+    .page .amalan-box .aamiin { font-size: calc(20pt * var(--font-scale)); }
+    .page .sources-list li { font-size: calc(11pt * var(--font-scale)); }
+    .page .sources-list .source-detail { font-size: calc(10pt * var(--font-scale)); }
+    .page .toc-list li { font-size: calc(11.5pt * var(--font-scale)); }
+    .page .dedication-page .dedication-text { font-size: calc(12pt * var(--font-scale)); }
+    .page .dedication-page .arabic-dedication { font-size: calc(20pt * var(--font-scale)); }
+    .page .dedication-page .signature { font-size: calc(11pt * var(--font-scale)); }
+    .page .kolofon { font-size: calc(10pt * var(--font-scale)); }
+    .page .kolofon .k-title { font-size: calc(18pt * var(--font-scale)); }
+    .page .kolofon .k-heading { font-size: calc(10.5pt * var(--font-scale)); }
+    .page .kolofon .k-meta { font-size: calc(9.5pt * var(--font-scale)); }
+    .page .page-number { font-size: calc(9.5pt * var(--font-scale)); }
+
+    @media screen and (max-width: 820px) {
+      .page h2.section-title { font-size: calc(14pt * var(--font-scale)); }
+      .page .arabic-heading { font-size: calc(15pt * var(--font-scale)); }
+      .page .cover .bismillah { font-size: calc(22pt * var(--font-scale)); }
+      .page .cover h1 { font-size: calc(20pt * var(--font-scale)); }
+      .page .cover .subtitle { font-size: calc(11pt * var(--font-scale)); }
+      .page .cover .arabic-title { font-size: calc(16pt * var(--font-scale)); }
+      .page .cover .dedication-badge { font-size: calc(10pt * var(--font-scale)); }
+      .page .cover .author { font-size: calc(10pt * var(--font-scale)); }
+      .page .arabic { font-size: calc(19pt * var(--font-scale)); }
+      .page .transliterasi { font-size: calc(10pt * var(--font-scale)); }
+      .page .terjemahan { font-size: calc(10.5pt * var(--font-scale)); }
+      .page .nota-kaki { font-size: calc(8pt * var(--font-scale)); }
+      .page .penafian { font-size: calc(8pt * var(--font-scale)); }
+      .page .amalan-box p { font-size: calc(11pt * var(--font-scale)); }
+      .page .amalan-box .aamiin { font-size: calc(16pt * var(--font-scale)); }
+      .page .sources-list li { font-size: calc(10pt * var(--font-scale)); }
+      .page .sources-list .source-detail { font-size: calc(9pt * var(--font-scale)); }
+      .page .kolofon { font-size: calc(9pt * var(--font-scale)); }
+      .page .kolofon .k-title { font-size: calc(15pt * var(--font-scale)); }
+      .page .toc-list li { font-size: calc(10.5pt * var(--font-scale)); }
+      .page .dedication-page .dedication-text { font-size: calc(11pt * var(--font-scale)); }
+      .page .dedication-page .arabic-dedication { font-size: calc(15pt * var(--font-scale)); }
+      .page .page-number { font-size: calc(8.5pt * var(--font-scale)); }
+    }
+
     @media print {
       body { background: #fff; counter-reset: page; }
       .page {
@@ -862,11 +925,23 @@
       if (saved) fontScale = parseFloat(saved);
     } catch(e) {}
 
-    function ubahFont(delta) {
-      fontScale = Math.max(0.75, Math.min(1.5, fontScale + delta * 0.1));
-      document.body.style.fontSize = (12 * fontScale) + 'pt';
+      function ubahFont(delta) {
+      fontScale = Math.max(0.7, Math.min(1.6, fontScale + delta * 0.1));
+      document.body.style.setProperty('--font-scale', fontScale);
       try { localStorage.setItem('fontScale', fontScale); } catch(e) {}
+
+      // Feedback visual pada butang
+      const btns = document.querySelectorAll('.toolbar button');
+      btns.forEach(b => {
+        if (b.textContent === 'A+' || b.textContent === 'A−') {
+          b.style.transform = 'scale(1.2)';
+          setTimeout(() => { b.style.transform = ''; }, 150);
+        }
+      });
     }
+
+    // Apply saiz font yang disimpan
+    document.body.style.setProperty('--font-scale', fontScale);
 
     // Apply saiz font yang disimpan
     if (fontScale !== 1) {
