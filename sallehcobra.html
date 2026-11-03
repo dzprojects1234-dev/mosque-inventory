@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doa-Doa Pilihan — Untuk Encik Salleh Cobra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a3a2a;
+      --accent: #b8860b;
+      --bg: #fdfaf3;
+      --text: #2c2c2c;
+      --border: #d4c5a9;
+      --muted: #6b6b6b;
+      --danger: #8a2b2b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lora', Georgia, serif;
+      background: #e8e4db;
+      color: var(--text);
+      line-height: 1.85;
+      font-size: 12pt;
+      -webkit-font-smoothing: antialiased;
+      counter-reset: page;
+    }
+
+    /* ===== PAGE ===== */
+    .page {
+      width: 21cm;
+      min-height: 29.7cm;
+      margin: 0.8cm auto;
+      padding: 2.4cm 2.6cm 2.4cm;
+      background: #fffdf9;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.12);
+      position: relative;
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      counter-increment: page;
+    }
+
+    /* ===== ORNAMENT ===== */
+    .page::before,
+    .page::after {
+      content: "";
+      position: absolute;
+      width: 55px;
+      height: 55px;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+    .page::before {
+      top: 14px; left: 14px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><g fill='none' stroke='%23b8860b' stroke-width='1.4'><path d='M2 2 L22 2 M2 2 L2 22'/><path d='M2 2 L14 14' stroke-dasharray='2,2'/><circle cx='20' cy='20' r='3' fill='%23b8860b' stroke='none'/><path d='M30 2 Q40 10 50 2' opacity='0.6'/><path d='M2 30 Q10 40 2 50' opacity='0.6'/></g></svg>");
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+    .page::after {
+      bottom: 14px; right: 14px;
+      transform: rotate(180deg);
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><g fill='none' stroke='%23b8860b' stroke-width='1.4'><path d='M2 2 L22 2 M2 2 L2 22'/><path d='M2 2 L14 14' stroke-dasharray='2,2'/><circle cx='20' cy='20' r='3' fill='%23b8860b' stroke='none'/><path d='M30 2 Q40 10 50 2' opacity='0.6'/><path d='M2 30 Q10 40 2 50' opacity='0.6'/></g></svg>");
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+
+    /* ===== PAGE NUMBER ===== */
+    .page .page-number {
+      position: absolute;
+      bottom: 1.1cm;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Lora', serif;
+      font-size: 9.5pt;
+      color: var(--muted);
+      letter-spacing: 2px;
+      padding: 0.15cm 0.6cm;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: #fffdf9;
+      z-index: 2;
+    }
+    .page .page-number::before {
+      content: "— " counter(page) " —";
+    }
+
+    /* ===== COVER ===== */
+    .cover {
+      background: linear-gradient(160deg, #fdfaf3 0%, #f3ecd8 100%);
+      border: 4px double var(--accent);
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 3cm 2.5cm;
+    }
+    .cover .bismillah {
+      font-family: 'Amiri', serif;
+      font-size: 30pt;
+      color: var(--primary);
+      margin-bottom: 2.5cm;
+      line-height: 1.6;
+    }
+    .cover .divider {
+      width: 60%; height: 1px;
+      background: linear-gradient(to right, transparent, var(--accent), transparent);
+      margin: 0.6cm 0 1.2cm;
+    }
+    .cover h1 {
+      font-family: 'Lora', serif;
+      font-size: 26pt;
+      color: var(--primary);
+      letter-spacing: 1px;
+      margin-bottom: 0.3cm;
+      font-weight: 700;
+    }
+    .cover .subtitle {
+      font-size: 13pt;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 2cm;
+    }
+    .cover .arabic-title {
+      font-family: 'Amiri', serif;
+      font-size: 22pt;
+      color: var(--accent);
+      margin-bottom: 0.3cm;
+      direction: rtl;
+    }
+    .cover .dedication-badge {
+      display: inline-block;
+      margin-top: 1.5cm;
+      padding: 0.4cm 1.2cm;
+      border: 1px solid var(--accent);
+      border-radius: 30px;
+      font-size: 11pt;
+      color: var(--primary);
+      letter-spacing: 1px;
+      background: rgba(184,134,11,0.06);
+    }
+    .cover .dedication-badge strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .cover .author {
+      margin-top: 2cm;
+      font-size: 11pt;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ===== HEADINGS ===== */
+    h2.section-title {
+      font-family: 'Lora', serif;
+      font-size: 17pt;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 1cm;
+      padding-bottom: 0.4cm;
+      border-bottom: 2px solid var(--accent);
+      letter-spacing: 0.5px;
+    }
+    .arabic-heading {
+      font-family: 'Amiri', serif;
+      font-size: 20pt;
+      color: var(--accent);
+      text-align: center;
+      direction: rtl;
+      margin-bottom: 1cm;
+    }
+
+    /* ===== ARABIC ===== */
+    .arabic {
+      font-family: 'Amiri', serif;
+      font-size: 24pt;
+      text-align: right;
+      direction: rtl;
+      line-height: 2.4;
+      color: var(--primary);
+      margin: 0.6cm 0;
+      padding: 0.6cm 0.8cm;
+      background: rgba(184, 134, 11, 0.04);
+      border-right: 4px solid var(--accent);
+      border-radius: 4px;
+    }
+
+    /* ===== TRANSLITERATION ===== */
+    .transliterasi {
+      font-family: 'Lora', serif;
+      font-size: 11pt;
+      font-style: italic;
+      color: #4a4a4a;
+      background: #f7f3e8;
+      padding: 0.5cm 0.8cm;
+      border-radius: 4px;
+      margin: 0.4cm 0 0.6cm;
+      line-height: 1.9;
+    }
+    .transliterasi strong {
+      font-style: normal;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* ===== TERJEMAHAN ===== */
+    .terjemahan {
+      font-size: 11.5pt;
+      color: #444;
+      font-style: italic;
+      border-left: 3px solid var(--accent);
+      padding: 0.4cm 0 0.4cm 0.9cm;
+      margin: 0.6cm 0;
+      line-height: 1.9;
+    }
+    .terjemahan::before {
+      content: "Terjemahan: ";
+      font-style: normal;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    /* ===== NOTA KAKI ===== */
+    .nota-kaki {
+      margin-top: auto;
+      padding-top: 0.6cm;
+      border-top: 1px solid var(--border);
+      font-size: 8.5pt;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .nota-kaki .label {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 9pt;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 0.2cm;
+    }
+    .nota-kaki ol { padding-left: 1.2cm; }
+    .nota-kaki li { margin-bottom: 0.15cm; }
+    .nota-kaki .status { color: #8a6d1f; font-style: italic; }
+
+    /* ===== PENAFIAN ===== */
+    .penafian {
+      margin-top: 0.8cm;
+      padding: 0.5cm 0.8cm;
+      background: #f4efe0;
+      border: 1px dashed var(--accent);
+      border-radius: 4px;
+      font-size: 8.5pt;
+      color: #555;
+      line-height: 1.65;
+      font-style: italic;
+    }
+    .penafian strong {
+      font-style: normal;
+      color: var(--danger);
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== AMALAN BOX ===== */
+    .amalan-box {
+      background: linear-gradient(135deg, #f7f3e8, #fdfaf3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2cm 1.5cm;
+      margin: 1cm 0;
+      text-align: center;
+    }
+    .amalan-box p {
+      font-size: 12pt;
+      color: var(--primary);
+      font-weight: 500;
+      line-height: 1.9;
+    }
+    .amalan-box .aamiin {
+      font-family: 'Amiri', serif;
+      font-size: 20pt;
+      color: var(--accent);
+      display: block;
+      margin-top: 0.5cm;
+    }
+
+    /* ===== SOURCES ===== */
+    .sources-list { list-style: none; padding: 0; }
+    .sources-list li {
+      padding: 0.5cm 0;
+      border-bottom: 1px dotted var(--border);
+      font-size: 11pt;
+    }
+    .sources-list li:last-child { border-bottom: none; }
+    .sources-list .source-title {
+      font-weight: 600;
+      color: var(--primary);
+      display: block;
+      margin-bottom: 0.1cm;
+    }
+    .sources-list .source-detail {
+      color: var(--muted);
+      font-size: 10pt;
+    }
+
+    /* ===== DEDICATION PAGE ===== */
+    .dedication-page {
+      justify-content: center;
+      text-align: center;
+      padding: 3cm 2.8cm;
+      background: linear-gradient(160deg, #fffdf9 0%, #f9f4e4 100%);
+    }
+    .dedication-page .ornament-top {
+      font-family: 'Amiri', serif;
+      font-size: 22pt;
+      color: var(--accent);
+      margin-bottom: 1.2cm;
+      letter-spacing: 4px;
+    }
+    .dedication-page .arabic-dedication {
+      font-family: 'Amiri', serif;
+      font-size: 20pt;
+      color: var(--primary);
+      direction: rtl;
+      line-height: 2.2;
+      margin-bottom: 1.5cm;
+    }
+    .dedication-page .dedication-text {
+      font-size: 12pt;
+      line-height: 2;
+      color: #333;
+      margin-bottom: 0.8cm;
+      text-align: justify;
+    }
+    .dedication-page .dedication-text strong {
+      color: var(--primary);
+      font-weight: 700;
+    }
+    .dedication-page .signature {
+      margin-top: 2cm;
+      font-style: italic;
+      color: var(--muted);
+      font-size: 11pt;
+    }
+    .dedication-page .divider-ornament {
+      width: 40%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--accent), transparent);
+      margin: 1.5cm auto;
+    }
+
+    /* ===== TOC ===== */
+    .toc-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 0.5cm;
+    }
+    .toc-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.45cm 0;
+      border-bottom: 1px dotted var(--border);
+      font-size: 11.5pt;
+    }
+    .toc-list li:last-child { border-bottom: none; }
+    .toc-list .toc-title {
+      color: var(--primary);
+      font-weight: 500;
+    }
+    .toc-list .toc-dots {
+      flex: 1;
+      border-bottom: 1px dotted var(--border);
+      margin: 0 0.4cm;
+      height: 0.5em;
+    }
+    .toc-list .toc-page {
+      color: var(--accent);
+      font-weight: 600;
+      min-width: 1cm;
+      text-align: right;
+    }
+
+    /* ===== KOLOFON ===== */
+    .kolofon {
+      font-size: 10pt;
+      color: #555;
+      line-height: 1.9;
+      text-align: center;
+      padding: 1cm 0;
+    }
+    .kolofon .k-title {
+      font-family: 'Amiri', serif;
+      font-size: 18pt;
+      color: var(--accent);
+      margin-bottom: 0.5cm;
+      direction: rtl;
+    }
+    .kolofon .k-heading {
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-size: 10.5pt;
+      margin-bottom: 0.3cm;
+    }
+    .kolofon .k-line {
+      width: 30%;
+      height: 1px;
+      background: var(--accent);
+      margin: 0.5cm auto;
+    }
+    .kolofon .k-meta {
+      color: var(--muted);
+      font-size: 9.5pt;
+      margin-top: 0.8cm;
+    }
+
+    /* ===== PRINT ===== */
+    @media print {
+      body { background: #fff; counter-reset: page; }
+      .page {
+        margin: 0;
+        box-shadow: none;
+        width: 100%;
+        min-height: 100vh;
+        padding: 2.2cm;
+        page-break-after: always;
+        counter-increment: page;
+      }
+      .cover, .dedication-page { min-height: 100vh; }
+      .page::before, .page::after,
+      .page .page-number,
+      .penafian, .amalan-box, .transliterasi, .arabic {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== COVER ==================== -->
+  <div class="page cover">
+    <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+    <div class="divider"></div>
+    <h1>Doa-Doa Pilihan</h1>
+    <p class="subtitle">Susunan Profesional — Teks Arab, Terjemahan &amp; Nota Kaki Hadis</p>
+    <div class="arabic-title">رَبِّ يَسِّرْ وَلَا تُعَسِّرْ</div>
+    <div class="divider"></div>
+    <div class="dedication-badge">
+      Dihadiahkan khas kepada <strong>Encik Salleh Cobra</strong>
+    </div>
+    <div class="author">Kompulan Doa Harian</div>
+  </div>
+
+  <!-- ==================== PAGE: PENGHARGAAN KHAS ==================== -->
+  <div class="page dedication-page">
+    <div class="ornament-top">❖ ❖ ❖</div>
+
+    <div class="arabic-dedication">
+      إِلَى صَدِيقِي الْمُحْتَرَمِ
+    </div>
+
+    <h2 class="section-title" style="border-bottom:none; font-size:16pt; margin-bottom:0.6cm;">
+      Penghargaan Khas
+    </h2>
+
+    <div class="divider-ornament"></div>
+
+    <p class="dedication-text">
+      Buku kecil ini disusun dengan penuh rasa kasih dan hormat, sebagai tanda penghargaan kepada seorang sahabat yang budiman — <strong>Encik Salleh Cobra</strong>.
+    </p>
+
+    <p class="dedication-text">
+      Kiriman pesanan yang penuh keberkatan pada pagi itu telah menyentuh hati, dan menjadi ilham kepada penyusunan doa-doa pilihan ini. Mudah-mudahan setiap huruf yang tercatat di sini menjadi <em>amal jariah</em> yang berterusan mengalir pahalanya, dan menjadi penyebab dipermudahkan segala urusan di dunia dan di akhirat.
+    </p>
+
+    <p class="dedication-text">
+      Semoga Allah S.W.T. memberkati Encik Salleh Cobra, keluarga, dan seluruh sahabat handai — dengan keberkatan, kesihatan, rezeki yang halal lagi melimpah, serta husnul khatimah. <em>Aamiin Ya Rabbal 'Alamin.</em>
+    </p>
+
+    <div class="divider-ornament"></div>
+
+    <p class="signature">
+      — Dengan penuh takzim,<br>
+      Sahabat anda
+    </p>
+
+    <div class="page-number"></div>
+  </div>
+
+  <!-- ==================== PAGE: DAFTAR ISI ==================== -->
+  <div class="page">
+    <h2 class="section-title">Daftar Isi</h2>
+
+    <ul class="toc-list">
+      <li>
+        <span class="toc-title">Penghargaan Khas</span>
+        <span class="toc-dots"></span>
+        <span class="toc-page">2</span>
+      </li>
+      <li>
+        <span class="toc-title">Pembuka — Selawat Ke Atas Nabi ﷺ</span>
+        <span class="toc-dots"></span>
+        <span class="toc-page">3</span>
+      </li>
+      <li>
+        <span class="toc-title">Doa Perlindungan Diri</span>
+        <span class="toc-dots"></span>
+        <span class="toc-page">4</span>
+      </li>
+      <li>
+        <span class="toc-title">Doa Memohon Kemudahan</span>
+        <span class="toc-dots"></span>
+        <span class="toc-page">5</span>
+      </li>
+      <li>
+        <span class="toc-title">Amalan &amp; Kaifiyat</span>
+        <span class="toc-dots"></span>
+        <span class="toc-page">6</span>
+      </li>
+      <li>
+        <span class="toc-title">Sumber Rujukan</span>
+        <span class="toc-dots"></span>
+        <span class="toc-page">7</span>
+      </li>
+      <li>
+        <span class="toc-title">Kolofon</span>
+        <span class="toc-dots"></span>
+        <span class="toc-page">8</span>
+      </li>
+    </ul>
+
+    <div class="nota-kaki">
+      <div class="label">Nota</div>
+      <ol>
+        <li>Halaman ini disusun untuk memudahkan pembaca menjejaki kandungan buku.</li>
+        <li>Nombor halaman akan berubah secara automatik apabila kandungan ditambah atau dibuang.</li>
+      </ol>
+    </div>
+
+    <div class="page-number"></div>
+  </div>
+
+  <!-- ==================== PAGE: PEMBUKA ==================== -->
+  <div class="page">
+    <div class="arabic-heading">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</div>
+    <p style="text-align:center; font-style:italic; color:var(--muted); margin-bottom:1.5cm; font-size:11pt;">
+      Assalamualaikum warahmatullahi wabarakaatuh
+    </p>
+    <div class="arabic" style="text-align:center; border-right:none; border-left:4px solid var(--accent); background:transparent; padding:0.4cm 0;">
+      اللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ وَعَلَى آلِ سَيِّدِنَا مُحَمَّدٍ
+    </div>
+    <div class="transliterasi">
+      <strong>Allahumma salli 'ala Sayyidina Muhammad wa 'ala aali Sayyidina Muhammad.</strong>
+    </div>
+    <div class="terjemahan">
+      Ya Allah, selawat serta salam ke atas penghulu kami Nabi Muhammad dan ke atas keluarga penghulu kami Nabi Muhammad.
+    </div>
+    <div class="nota-kaki">
+      <div class="label">Nota Kaki</div>
+      <ol>
+        <li>Selawat ini adalah lafaz selawat yang masyhur diajarkan oleh Rasulullah ﷺ. Lihat <em>Sahih al-Bukhari</em>, No. 3370; <em>Sahih Muslim</em>, No. 406.</li>
+      </ol>
+    </div>
+    <div class="penafian">
+      <strong>Nota Penting:</strong> Rujukan hadis yang disenaraikan adalah berdasarkan ingatan dan pengetahuan umum penulis. Sila semak semula dengan kitab hadis asal atau laman seperti <em>sunnah.com</em> untuk memastikan nombor hadis dan status tepat sebelum disebarkan secara meluas.
+    </div>
+    <div class="page-number"></div>
+  </div>
+
+  <!-- ==================== PAGE: DOA 1 ==================== -->
+  <div class="page">
+    <h2 class="section-title">Doa Perlindungan Diri</h2>
+    <div class="arabic">
+      بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ
+    </div>
+    <div class="transliterasi">
+      <strong>Bismillahil-ladzi la yadhurru ma'as-mihi syai'un fil ardhi wa la fis-sama'i wa huwas-sami'ul-'alim.</strong>
+    </div>
+    <div class="terjemahan">
+      Dengan nama Allah yang tidak memberi mudarat sesuatu pun bersama nama-Nya, sama ada di bumi mahupun di langit, dan Dialah yang Maha Mendengar lagi Maha Mengetahui.
+    </div>
+    <div class="nota-kaki">
+      <div class="label">Nota Kaki — Sumber Hadis</div>
+      <ol>
+        <li>
+          <strong>Perawi:</strong> Sayyidina Uthman bin Affan r.a.
+          <br>
+          <strong>Sumber:</strong> <em>Sunan Abu Dawud</em>, Kitab al-Adab, No. 5088; <em>Sunan al-Tirmidhi</em>, No. 3388; <em>Sunan Ibn Majah</em>, No. 3869.
+          <br>
+          <span class="status">Status: Hasan Sahih (menurut Imam al-Tirmidhi).</span>
+        </li>
+      </ol>
+    </div>
+    <div class="penafian">
+      <strong>Nota Penting:</strong> Rujukan hadis yang disenaraikan adalah berdasarkan ingatan dan pengetahuan umum penulis. Sila semak semula dengan kitab hadis asal atau laman seperti <em>sunnah.com</em> untuk memastikan nombor hadis dan status tepat sebelum disebarkan secara meluas.
+    </div>
+    <div class="page-number"></div>
+  </div>
+
+  <!-- ==================== PAGE: DOA 2 ==================== -->
+  <div class="page">
+    <h2 class="section-title">Doa Memohon Kemudahan</h2>
+    <div class="arabic">
+      رَبِّ يَسِّرْ وَلَا تُعَسِّرْ، رَبِّ تَمِّمْ بِالْخَيْرِ
+    </div>
+    <div class="transliterasi">
+      <strong>Rabbi yassir wa la tu'assir, Rabbi tammim bil-khair.</strong>
+    </div>
+    <div class="terjemahan">
+      Wahai Tuhanku, permudahkanlah dan janganlah Engkau persulitkan. Wahai Tuhanku, sempurnakanlah dengan kebaikan.
+    </div>
+    <div class="nota-kaki">
+      <div class="label">Nota Kaki — Sumber Hadis</div>
+      <ol>
+        <li>
+          <strong>Perawi:</strong> Sayyidina Anas bin Malik r.a. (dan lain-lain).
+          <br>
+          <strong>Sumber:</strong> <em>Musnad Ahmad</em>, No. 24475; <em>Sunan al-Nasa'i</em> (sebahagian riwayat); <em>Sahih Ibn Hibban</em>.
+          <br>
+          <span class="status">Status: Hasan (menurut sebahagian ulama). Doa ini juga masyhur dalam kitab-kitab doa mu'tabar.</span>
+        </li>
+      </ol>
+    </div>
+    <div class="penafian">
+      <strong>Nota Penting:</strong> Rujukan hadis yang disenaraikan adalah berdasarkan ingatan dan pengetahuan umum penulis. Sila semak semula dengan kitab hadis asal atau laman seperti <em>sunnah.com</em> untuk memastikan nombor hadis dan status tepat sebelum disebarkan secara meluas.
+    </div>
+    <div class="page-number"></div>
+  </div>
+
+  <!-- ==================== PAGE: AMALAN ==================== -->
+  <div class="page">
+    <h2 class="section-title">Amalan &amp; Kaifiyat</h2>
+    <div class="amalan-box">
+      <p>
+        Amalkan doa ini setiap hari, <em>in sya Allah</em> urusan anda akan dipermudahkan oleh Allah S.W.T.
+      </p>
+      <span class="aamiin">آمِين</span>
+    </div>
+    <p style="font-size:11pt; color:#555; text-align:center; font-style:italic;">
+      “Ya Allah, permudahkanlah dan janganlah dipersulitkan, dan Kau akhirkanlah dengan kebaikan.”
+    </p>
+    <div class="nota-kaki">
+      <div class="label">Catatan</div>
+      <ol>
+        <li>Doa ini elok dibaca pada permulaan hari, sebelum memulakan sesuatu urusan, dan selepas solat fardhu.</li>
+        <li>Disarankan juga membaca dengan penuh keyakinan, khusyuk, serta menghadap kiblat.</li>
+        <li>Semua rujukan hadis di atas hendaklah disemak semula dengan kitab asal atau merujuk kepada ahli hadis untuk pengesahan sanad dan status.</li>
+      </ol>
+    </div>
+    <div class="penafian">
+      <strong>Nota Penting:</strong> Rujukan hadis yang disenaraikan adalah berdasarkan ingatan dan pengetahuan umum penulis. Sila semak semula dengan kitab hadis asal atau laman seperti <em>sunnah.com</em> untuk memastikan nombor hadis dan status tepat sebelum disebarkan secara meluas.
+    </div>
+    <div class="page-number"></div>
+  </div>
+
+  <!-- ==================== PAGE: SUMBER ==================== -->
+  <div class="page">
+    <h2 class="section-title">Sumber Rujukan</h2>
+
+    <ul class="sources-list">
+      <li>
+        <span class="source-title">1. Doa Perlindungan Diri (Bismillahilladzi...)</span>
+        <span class="source-detail">Uthman bin Affan r.a. — <em>Sunan Abu Dawud</em> (No. 5088); <em>Sunan al-Tirmidhi</em> (No. 3388); <em>Sunan Ibn Majah</em> (No. 3869). Status: Hasan Sahih.</span>
+      </li>
+      <li>
+        <span class="source-title">2. Doa Memohon Kemudahan (Rabbi yassir...)</span>
+        <span class="source-detail">Anas bin Malik r.a. — <em>Musnad Ahmad</em> (No. 24475); <em>Sahih Ibn Hibban</em>. Status: Hasan.</span>
+      </li>
+      <li>
+        <span class="source-title">3. Selawat Ke Atas Nabi ﷺ</span>
+        <span class="source-detail"><em>Sahih al-Bukhari</em> (No. 3370); <em>Sahih Muslim</em> (No. 406).</span>
+      </li>
+    </ul>
+
+    <div style="margin-top:1.5cm; padding:0.9cm 1.1cm; background:#f4efe0; border:1px solid var(--accent); border-left:6px solid var(--danger); border-radius:4px; font-size:10pt; color:#444; line-height:1.75;">
+      <div style="font-weight:700; color:var(--danger); letter-spacing:1px; text-transform:uppercase; font-size:9.5pt; margin-bottom:0.3cm;">
+        ⚠ Nota Penting
+      </div>
+      Rujukan hadis yang saya berikan adalah berdasarkan ingatan dan pengetahuan umum. Sila semak semula dengan kitab hadis asal atau laman seperti <strong>sunnah.com</strong> untuk memastikan nombor hadis dan status tepat sebelum disebarkan secara meluas.
+    </div>
+
+    <div class="page-number"></div>
+  </div>
+
+  <!-- ==================== PAGE: KOLOFON ==================== -->
+  <div class="page">
+    <div style="margin-top:auto; margin-bottom:auto;">
+      <div class="kolofon">
+        <div class="k-title">كُلُّ عَامٍ وَأَنْتُمْ بِخَيْرٍ</div>
+        <div class="k-line"></div>
+
+        <div class="k-heading">Kolofon</div>
+
+        <p style="margin-top:0.5cm;">
+          <strong style="color:var(--primary);">Doa-Doa Pilihan</strong><br>
+          <em>Susunan Profesional — Teks Arab, Terjemahan &amp; Nota Kaki Hadis</em>
+        </p>
+
+        <div class="k-line"></div>
+
+        <p style="font-size:10.5pt; color:#444;">
+          Dihadiahkan dengan penuh kasih dan hormat kepada<br>
+          <strong style="color:var(--accent); font-size:12pt;">Encik Salleh Cobra</strong><br>
+          <span style="font-style:italic; font-size:10pt;">sebagai tanda penghargaan atas kiriman pesanan yang penuh keberkatan.</span>
+        </p>
+
+        <div class="k-line"></div>
+
+        <p style="font-size:10pt; color:#555;">
+          Disusun pada tahun <strong>Rabu, 4 November 2026</strong><br>
+          Edisi Peribadi — Untuk Kegunaan Sahabat Handai
+        </p>
+
+        <p class="k-meta">
+          Semua doa dan rujukan hadis disusun berdasarkan kitab-kitab mu'tabar.<br>
+          Pembaca disarankan merujuk kepada guru dan ahli ilmu untuk pengesahan.<br><br>
+          &copy; Hak cipta peribadi — Bebas dikongsikan untuk tujuan dakwah.
+        </p>
+      </div>
+    </div>
+    <div class="page-number"></div>
+  </div>
+
+</body>
+</html>
