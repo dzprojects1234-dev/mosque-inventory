@@ -16,6 +16,7 @@
       --border: #d4c5a9;
       --muted: #6b6b6b;
       --danger: #8a2b2b;
+      --font-scale: 1;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -80,7 +81,6 @@
       left: 50%;
       transform: translateX(-50%);
       font-family: 'Lora', serif;
-      font-size: 9.5pt;
       color: var(--muted);
       letter-spacing: 2px;
       padding: 0.15cm 0.6cm;
@@ -104,7 +104,6 @@
     }
     .cover .bismillah {
       font-family: 'Amiri', serif;
-      font-size: 30pt;
       color: var(--primary);
       margin-bottom: 2.5cm;
       line-height: 1.6;
@@ -116,21 +115,18 @@
     }
     .cover h1 {
       font-family: 'Lora', serif;
-      font-size: 26pt;
       color: var(--primary);
       letter-spacing: 1px;
       margin-bottom: 0.3cm;
       font-weight: 700;
     }
     .cover .subtitle {
-      font-size: 13pt;
       color: var(--muted);
       font-style: italic;
       margin-bottom: 2cm;
     }
     .cover .arabic-title {
       font-family: 'Amiri', serif;
-      font-size: 22pt;
       color: var(--accent);
       margin-bottom: 0.3cm;
       direction: rtl;
@@ -141,7 +137,6 @@
       padding: 0.4cm 1.2cm;
       border: 1px solid var(--accent);
       border-radius: 30px;
-      font-size: 11pt;
       color: var(--primary);
       letter-spacing: 1px;
       background: rgba(184,134,11,0.06);
@@ -152,7 +147,6 @@
     }
     .cover .author {
       margin-top: 2cm;
-      font-size: 11pt;
       color: var(--muted);
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -161,7 +155,6 @@
     /* ===== HEADINGS ===== */
     h2.section-title {
       font-family: 'Lora', serif;
-      font-size: 17pt;
       color: var(--primary);
       text-align: center;
       margin-bottom: 1cm;
@@ -171,7 +164,6 @@
     }
     .arabic-heading {
       font-family: 'Amiri', serif;
-      font-size: 20pt;
       color: var(--accent);
       text-align: center;
       direction: rtl;
@@ -181,7 +173,6 @@
     /* ===== ARABIC ===== */
     .arabic {
       font-family: 'Amiri', serif;
-      font-size: 24pt;
       text-align: right;
       direction: rtl;
       line-height: 2.4;
@@ -196,7 +187,6 @@
     /* ===== TRANSLITERATION ===== */
     .transliterasi {
       font-family: 'Lora', serif;
-      font-size: 11pt;
       font-style: italic;
       color: #4a4a4a;
       background: #f7f3e8;
@@ -213,7 +203,6 @@
 
     /* ===== TERJEMAHAN ===== */
     .terjemahan {
-      font-size: 11.5pt;
       color: #444;
       font-style: italic;
       border-left: 3px solid var(--accent);
@@ -233,14 +222,12 @@
       margin-top: auto;
       padding-top: 0.6cm;
       border-top: 1px solid var(--border);
-      font-size: 8.5pt;
       color: var(--muted);
       line-height: 1.6;
     }
     .nota-kaki .label {
       font-weight: 700;
       color: var(--primary);
-      font-size: 9pt;
       letter-spacing: 1px;
       text-transform: uppercase;
       margin-bottom: 0.2cm;
@@ -256,7 +243,6 @@
       background: #f4efe0;
       border: 1px dashed var(--accent);
       border-radius: 4px;
-      font-size: 8.5pt;
       color: #555;
       line-height: 1.65;
       font-style: italic;
@@ -277,14 +263,12 @@
       text-align: center;
     }
     .amalan-box p {
-      font-size: 12pt;
       color: var(--primary);
       font-weight: 500;
       line-height: 1.9;
     }
     .amalan-box .aamiin {
       font-family: 'Amiri', serif;
-      font-size: 20pt;
       color: var(--accent);
       display: block;
       margin-top: 0.5cm;
@@ -295,7 +279,6 @@
     .sources-list li {
       padding: 0.5cm 0;
       border-bottom: 1px dotted var(--border);
-      font-size: 11pt;
     }
     .sources-list li:last-child { border-bottom: none; }
     .sources-list .source-title {
@@ -306,7 +289,6 @@
     }
     .sources-list .source-detail {
       color: var(--muted);
-      font-size: 10pt;
     }
 
     /* ===== DEDICATION PAGE ===== */
@@ -318,21 +300,18 @@
     }
     .dedication-page .ornament-top {
       font-family: 'Amiri', serif;
-      font-size: 22pt;
       color: var(--accent);
       margin-bottom: 1.2cm;
       letter-spacing: 4px;
     }
     .dedication-page .arabic-dedication {
       font-family: 'Amiri', serif;
-      font-size: 20pt;
       color: var(--primary);
       direction: rtl;
       line-height: 2.2;
       margin-bottom: 1.5cm;
     }
     .dedication-page .dedication-text {
-      font-size: 12pt;
       line-height: 2;
       color: #333;
       margin-bottom: 0.8cm;
@@ -346,7 +325,6 @@
       margin-top: 2cm;
       font-style: italic;
       color: var(--muted);
-      font-size: 11pt;
     }
     .dedication-page .divider-ornament {
       width: 40%;
@@ -367,7 +345,6 @@
       align-items: baseline;
       padding: 0.45cm 0;
       border-bottom: 1px dotted var(--border);
-      font-size: 11.5pt;
     }
     .toc-list li:last-child { border-bottom: none; }
     .toc-list .toc-title {
@@ -389,7 +366,6 @@
 
     /* ===== KOLOFON ===== */
     .kolofon {
-      font-size: 10pt;
       color: #555;
       line-height: 1.9;
       text-align: center;
@@ -397,7 +373,6 @@
     }
     .kolofon .k-title {
       font-family: 'Amiri', serif;
-      font-size: 18pt;
       color: var(--accent);
       margin-bottom: 0.5cm;
       direction: rtl;
@@ -407,7 +382,6 @@
       color: var(--primary);
       letter-spacing: 2px;
       text-transform: uppercase;
-      font-size: 10.5pt;
       margin-bottom: 0.3cm;
     }
     .kolofon .k-line {
@@ -418,7 +392,6 @@
     }
     .kolofon .k-meta {
       color: var(--muted);
-      font-size: 9.5pt;
       margin-top: 0.8cm;
     }
 
@@ -512,12 +485,43 @@
       border-color: #d4a838;
     }
 
+    /* =========================================================
+       SAIZ FONT BERASASKAN --font-scale
+       SEMUA saiz dalam buku dikawal dari sini.
+       Ini satu-satunya tempat yang menetapkan font-size.
+       ========================================================= */
+    .page { font-size: calc(12pt * var(--font-scale)); }
+    h2.section-title { font-size: calc(17pt * var(--font-scale)); }
+    .arabic-heading { font-size: calc(20pt * var(--font-scale)); }
+    .cover .bismillah { font-size: calc(30pt * var(--font-scale)); }
+    .cover h1 { font-size: calc(26pt * var(--font-scale)); }
+    .cover .subtitle { font-size: calc(13pt * var(--font-scale)); }
+    .cover .arabic-title { font-size: calc(22pt * var(--font-scale)); }
+    .cover .dedication-badge { font-size: calc(11pt * var(--font-scale)); }
+    .cover .author { font-size: calc(11pt * var(--font-scale)); }
+    .arabic { font-size: calc(24pt * var(--font-scale)); }
+    .transliterasi { font-size: calc(11pt * var(--font-scale)); }
+    .terjemahan { font-size: calc(11.5pt * var(--font-scale)); }
+    .nota-kaki { font-size: calc(8.5pt * var(--font-scale)); }
+    .nota-kaki .label { font-size: calc(9pt * var(--font-scale)); }
+    .penafian { font-size: calc(8.5pt * var(--font-scale)); }
+    .amalan-box p { font-size: calc(12pt * var(--font-scale)); }
+    .amalan-box .aamiin { font-size: calc(20pt * var(--font-scale)); }
+    .sources-list li { font-size: calc(11pt * var(--font-scale)); }
+    .sources-list .source-detail { font-size: calc(10pt * var(--font-scale)); }
+    .toc-list li { font-size: calc(11.5pt * var(--font-scale)); }
+    .dedication-page .dedication-text { font-size: calc(12pt * var(--font-scale)); }
+    .dedication-page .arabic-dedication { font-size: calc(20pt * var(--font-scale)); }
+    .dedication-page .signature { font-size: calc(11pt * var(--font-scale)); }
+    .kolofon { font-size: calc(10pt * var(--font-scale)); }
+    .kolofon .k-title { font-size: calc(18pt * var(--font-scale)); }
+    .kolofon .k-heading { font-size: calc(10.5pt * var(--font-scale)); }
+    .kolofon .k-meta { font-size: calc(9.5pt * var(--font-scale)); }
+    .page .page-number { font-size: calc(9.5pt * var(--font-scale)); }
+
     /* ===== PHONE / SMALL SCREEN ===== */
     @media screen and (max-width: 820px) {
-      body {
-        padding: 8px;
-        font-size: 11pt;
-      }
+      body { padding: 8px; }
       .page {
         width: 100% !important;
         min-height: auto !important;
@@ -530,107 +534,52 @@
         top: 6px; left: 6px;
       }
       .page::after { top: auto; left: auto; bottom: 6px; right: 6px; }
-      .page .page-number {
-        bottom: 0.5cm;
-        font-size: 8.5pt;
-      }
-
+      .page .page-number { bottom: 0.5cm; }
       .cover { min-height: auto !important; padding: 2cm 1cm !important; }
-      .cover .bismillah { font-size: 22pt; margin-bottom: 1.2cm; }
-      .cover h1 { font-size: 20pt; }
-      .cover .subtitle { font-size: 11pt; margin-bottom: 1.2cm; }
-      .cover .arabic-title { font-size: 16pt; }
-      .cover .dedication-badge { font-size: 10pt; padding: 0.3cm 0.8cm; }
-      .cover .author { margin-top: 1.2cm; font-size: 10pt; }
-
+      .cover .bismillah { margin-bottom: 1.2cm; }
+      .cover .subtitle { margin-bottom: 1.2cm; }
+      .cover .dedication-badge { padding: 0.3cm 0.8cm; }
+      .cover .author { margin-top: 1.2cm; }
       .dedication-page { padding: 1.5cm 1cm !important; }
-      .dedication-page .arabic-dedication { font-size: 15pt; }
-      .dedication-page .dedication-text { font-size: 11pt; line-height: 1.8; text-align: left; }
+      .dedication-page .dedication-text { line-height: 1.8; text-align: left; }
       .dedication-page .signature { margin-top: 1cm; }
-
-      h2.section-title { font-size: 14pt; margin-bottom: 0.6cm; }
-      .arabic-heading { font-size: 15pt; margin-bottom: 0.6cm; }
-      .arabic { font-size: 19pt; line-height: 2.1; padding: 0.4cm 0.6cm; }
-      .transliterasi { font-size: 10pt; padding: 0.4cm 0.6cm; }
-      .terjemahan { font-size: 10.5pt; }
-      .nota-kaki { font-size: 8pt; }
-      .penafian { font-size: 8pt; }
+      h2.section-title { margin-bottom: 0.6cm; }
+      .arabic-heading { margin-bottom: 0.6cm; }
+      .arabic { line-height: 2.1; padding: 0.4cm 0.6cm; }
+      .transliterasi { padding: 0.4cm 0.6cm; }
       .amalan-box { padding: 0.8cm 0.9cm; }
-      .amalan-box p { font-size: 11pt; }
-      .amalan-box .aamiin { font-size: 16pt; }
-      .sources-list li { font-size: 10pt; }
-      .sources-list .source-detail { font-size: 9pt; }
-      .kolofon { font-size: 9pt; }
-      .kolofon .k-title { font-size: 15pt; }
-      .toc-list li { font-size: 10.5pt; padding: 0.3cm 0; }
-
+      .toc-list li { padding: 0.3cm 0; }
       .toolbar { bottom: 14px; right: 14px; gap: 8px; }
       .toolbar button { width: 44px; height: 44px; font-size: 17px; }
-    }
 
-    
-        /* ===== FONT SIZE SCALING ===== */
-    :root {
-      --font-scale: 1;
-    }
-    .page {
-      font-size: calc(12pt * var(--font-scale));
-      transition: font-size 0.2s ease;
-    }
-    .page h2.section-title { font-size: calc(17pt * var(--font-scale)); }
-    .page .arabic-heading { font-size: calc(20pt * var(--font-scale)); }
-    .page .cover .bismillah { font-size: calc(30pt * var(--font-scale)); }
-    .page .cover h1 { font-size: calc(26pt * var(--font-scale)); }
-    .page .cover .subtitle { font-size: calc(13pt * var(--font-scale)); }
-    .page .cover .arabic-title { font-size: calc(22pt * var(--font-scale)); }
-    .page .cover .dedication-badge { font-size: calc(11pt * var(--font-scale)); }
-    .page .cover .author { font-size: calc(11pt * var(--font-scale)); }
-    .page .arabic { font-size: calc(24pt * var(--font-scale)); }
-    .page .transliterasi { font-size: calc(11pt * var(--font-scale)); }
-    .page .terjemahan { font-size: calc(11.5pt * var(--font-scale)); }
-    .page .nota-kaki { font-size: calc(8.5pt * var(--font-scale)); }
-    .page .nota-kaki .label { font-size: calc(9pt * var(--font-scale)); }
-    .page .penafian { font-size: calc(8.5pt * var(--font-scale)); }
-    .page .amalan-box p { font-size: calc(12pt * var(--font-scale)); }
-    .page .amalan-box .aamiin { font-size: calc(20pt * var(--font-scale)); }
-    .page .sources-list li { font-size: calc(11pt * var(--font-scale)); }
-    .page .sources-list .source-detail { font-size: calc(10pt * var(--font-scale)); }
-    .page .toc-list li { font-size: calc(11.5pt * var(--font-scale)); }
-    .page .dedication-page .dedication-text { font-size: calc(12pt * var(--font-scale)); }
-    .page .dedication-page .arabic-dedication { font-size: calc(20pt * var(--font-scale)); }
-    .page .dedication-page .signature { font-size: calc(11pt * var(--font-scale)); }
-    .page .kolofon { font-size: calc(10pt * var(--font-scale)); }
-    .page .kolofon .k-title { font-size: calc(18pt * var(--font-scale)); }
-    .page .kolofon .k-heading { font-size: calc(10.5pt * var(--font-scale)); }
-    .page .kolofon .k-meta { font-size: calc(9.5pt * var(--font-scale)); }
-    .page .page-number { font-size: calc(9.5pt * var(--font-scale)); }
-
-    @media screen and (max-width: 820px) {
-      .page h2.section-title { font-size: calc(14pt * var(--font-scale)); }
-      .page .arabic-heading { font-size: calc(15pt * var(--font-scale)); }
-      .page .cover .bismillah { font-size: calc(22pt * var(--font-scale)); }
-      .page .cover h1 { font-size: calc(20pt * var(--font-scale)); }
-      .page .cover .subtitle { font-size: calc(11pt * var(--font-scale)); }
-      .page .cover .arabic-title { font-size: calc(16pt * var(--font-scale)); }
-      .page .cover .dedication-badge { font-size: calc(10pt * var(--font-scale)); }
-      .page .cover .author { font-size: calc(10pt * var(--font-scale)); }
-      .page .arabic { font-size: calc(19pt * var(--font-scale)); }
-      .page .transliterasi { font-size: calc(10pt * var(--font-scale)); }
-      .page .terjemahan { font-size: calc(10.5pt * var(--font-scale)); }
-      .page .nota-kaki { font-size: calc(8pt * var(--font-scale)); }
-      .page .penafian { font-size: calc(8pt * var(--font-scale)); }
-      .page .amalan-box p { font-size: calc(11pt * var(--font-scale)); }
-      .page .amalan-box .aamiin { font-size: calc(16pt * var(--font-scale)); }
-      .page .sources-list li { font-size: calc(10pt * var(--font-scale)); }
-      .page .sources-list .source-detail { font-size: calc(9pt * var(--font-scale)); }
-      .page .kolofon { font-size: calc(9pt * var(--font-scale)); }
-      .page .kolofon .k-title { font-size: calc(15pt * var(--font-scale)); }
-      .page .toc-list li { font-size: calc(10.5pt * var(--font-scale)); }
-      .page .dedication-page .dedication-text { font-size: calc(11pt * var(--font-scale)); }
-      .page .dedication-page .arabic-dedication { font-size: calc(15pt * var(--font-scale)); }
+      /* Saiz font versi telefon — guna --font-scale juga */
+      .page { font-size: calc(11pt * var(--font-scale)); }
+      h2.section-title { font-size: calc(14pt * var(--font-scale)); }
+      .arabic-heading { font-size: calc(15pt * var(--font-scale)); }
+      .cover .bismillah { font-size: calc(22pt * var(--font-scale)); }
+      .cover h1 { font-size: calc(20pt * var(--font-scale)); }
+      .cover .subtitle { font-size: calc(11pt * var(--font-scale)); }
+      .cover .arabic-title { font-size: calc(16pt * var(--font-scale)); }
+      .cover .dedication-badge { font-size: calc(10pt * var(--font-scale)); }
+      .cover .author { font-size: calc(10pt * var(--font-scale)); }
+      .arabic { font-size: calc(19pt * var(--font-scale)); }
+      .transliterasi { font-size: calc(10pt * var(--font-scale)); }
+      .terjemahan { font-size: calc(10.5pt * var(--font-scale)); }
+      .nota-kaki { font-size: calc(8pt * var(--font-scale)); }
+      .penafian { font-size: calc(8pt * var(--font-scale)); }
+      .amalan-box p { font-size: calc(11pt * var(--font-scale)); }
+      .amalan-box .aamiin { font-size: calc(16pt * var(--font-scale)); }
+      .sources-list li { font-size: calc(10pt * var(--font-scale)); }
+      .sources-list .source-detail { font-size: calc(9pt * var(--font-scale)); }
+      .toc-list li { font-size: calc(10.5pt * var(--font-scale)); }
+      .dedication-page .dedication-text { font-size: calc(11pt * var(--font-scale)); }
+      .dedication-page .arabic-dedication { font-size: calc(15pt * var(--font-scale)); }
+      .kolofon { font-size: calc(9pt * var(--font-scale)); }
+      .kolofon .k-title { font-size: calc(15pt * var(--font-scale)); }
       .page .page-number { font-size: calc(8.5pt * var(--font-scale)); }
     }
 
+    /* ===== PRINT ===== */
     @media print {
       body { background: #fff; counter-reset: page; }
       .page {
@@ -652,7 +601,6 @@
       .toolbar, #progressBar, #topBtn { display: none !important; }
     }
   </style>
-
 </head>
 <body class="dark">
 
@@ -677,7 +625,7 @@
   <div class="page dedication-page">
     <div class="ornament-top">❖ ❖ ❖</div>
     <div class="arabic-dedication">إِلَى صَدِيقِي الْمُحْتَرَمِ</div>
-    <h2 class="section-title" style="border-bottom:none; font-size:16pt; margin-bottom:0.6cm;">Penghargaan Khas</h2>
+    <h2 class="section-title" style="border-bottom:none; margin-bottom:0.6cm;">Penghargaan Khas</h2>
     <div class="divider-ornament"></div>
     <p class="dedication-text">
       Buku kecil ini disusun dengan penuh rasa kasih dan hormat, sebagai tanda penghargaan kepada seorang sahabat yang budiman — <strong>Encik Salleh Cobra</strong>.
@@ -718,7 +666,7 @@
   <!-- ==================== PAGE: PEMBUKA ==================== -->
   <div class="page">
     <div class="arabic-heading">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</div>
-    <p style="text-align:center; font-style:italic; color:var(--muted); margin-bottom:1.5cm; font-size:11pt;">
+    <p style="text-align:center; font-style:italic; color:var(--muted); margin-bottom:1.5cm;">
       Assalamualaikum warahmatullahi wabarakaatuh
     </p>
     <div class="arabic" style="text-align:center; border-right:none; border-left:4px solid var(--accent); background:transparent; padding:0.4cm 0;">
@@ -809,7 +757,7 @@
       <p>Amalkan doa ini setiap hari, <em>in sya Allah</em> urusan anda akan dipermudahkan oleh Allah S.W.T.</p>
       <span class="aamiin">آمِين</span>
     </div>
-    <p style="font-size:11pt; color:#555; text-align:center; font-style:italic;">
+    <p style="text-align:center; font-style:italic; color:var(--muted);">
       “Ya Allah, permudahkanlah dan janganlah dipersulitkan, dan Kau akhirkanlah dengan kebaikan.”
     </p>
     <div class="nota-kaki">
@@ -843,8 +791,8 @@
         <span class="source-detail"><em>Sahih al-Bukhari</em> (No. 3370); <em>Sahih Muslim</em> (No. 406).</span>
       </li>
     </ul>
-    <div style="margin-top:1.5cm; padding:0.9cm 1.1cm; background:#f4efe0; border:1px solid var(--accent); border-left:6px solid var(--danger); border-radius:4px; font-size:10pt; color:#444; line-height:1.75;">
-      <div style="font-weight:700; color:var(--danger); letter-spacing:1px; text-transform:uppercase; font-size:9.5pt; margin-bottom:0.3cm;">⚠ Nota Penting</div>
+    <div class="penafian" style="margin-top:1.5cm; border-left:6px solid var(--danger); border-style:solid;">
+      <div style="font-weight:700; color:var(--danger); letter-spacing:1px; text-transform:uppercase; margin-bottom:0.3cm;">⚠ Nota Penting</div>
       Rujukan hadis yang saya berikan adalah berdasarkan ingatan dan pengetahuan umum. Sila semak semula dengan kitab hadis asal atau laman seperti <strong>sunnah.com</strong> untuk memastikan nombor hadis dan status tepat sebelum disebarkan secara meluas.
     </div>
     <div class="page-number"></div>
@@ -862,13 +810,13 @@
           <em>Susunan Profesional — Teks Arab, Terjemahan &amp; Nota Kaki Hadis</em>
         </p>
         <div class="k-line"></div>
-        <p style="font-size:10.5pt; color:#444;">
+        <p>
           Dihadiahkan dengan penuh kasih dan hormat kepada<br>
-          <strong style="color:var(--accent); font-size:12pt;">Encik Salleh Cobra</strong><br>
-          <span style="font-style:italic; font-size:10pt;">sebagai tanda penghargaan atas kiriman pesanan yang penuh keberkatan.</span>
+          <strong style="color:var(--accent);">Encik Salleh Cobra</strong><br>
+          <span style="font-style:italic;">sebagai tanda penghargaan atas kiriman pesanan yang penuh keberkatan.</span>
         </p>
         <div class="k-line"></div>
-        <p style="font-size:10pt; color:#555;">
+        <p>
           Disusun pada tahun <strong>Rabu, 4 November 2026</strong><br>
           Edisi Peribadi — Untuk Kegunaan Sahabat Handai
         </p>
@@ -893,19 +841,16 @@
 
   <script>
     // ===== DEFAULT: DARK MODE =====
-    // Body dah ada class "dark" secara default.
-    // Kalau user pilih cerah sebelum ini, buang class "dark".
     (function() {
       try {
         if (localStorage.getItem('darkMode') === '0') {
           document.body.classList.remove('dark');
         }
       } catch(e) {}
-      // Set ikon butang selepas DOM sedia
       document.addEventListener('DOMContentLoaded', function() {
         const btn = document.getElementById('darkBtn');
-        const isDark = document.body.classList.contains('dark');
-        if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+        if (!btn) return;
+        btn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
       });
     })();
 
@@ -925,14 +870,16 @@
       if (saved) fontScale = parseFloat(saved);
     } catch(e) {}
 
-          function ubahFont(delta) {
+    // Apply semasa mula
+    document.documentElement.style.setProperty('--font-scale', fontScale);
+
+    function ubahFont(delta) {
       fontScale = Math.max(0.7, Math.min(1.6, fontScale + delta * 0.1));
       document.documentElement.style.setProperty('--font-scale', fontScale);
       try { localStorage.setItem('fontScale', fontScale); } catch(e) {}
 
       // Feedback visual pada butang
-      const btns = document.querySelectorAll('.toolbar button');
-      btns.forEach(b => {
+      document.querySelectorAll('.toolbar button').forEach(b => {
         if (b.textContent === 'A+' || b.textContent === 'A−') {
           b.style.transform = 'scale(1.2)';
           setTimeout(() => { b.style.transform = ''; }, 150);
@@ -940,17 +887,13 @@
       });
     }
 
-    // Apply saiz font yang disimpan
-    document.documentElement.style.setProperty('--font-scale', fontScale);
-
-    // ===== PROGRESS BAR =====
+    // ===== PROGRESS BAR + BUTANG KE ATAS =====
     window.addEventListener('scroll', function() {
       const scrollTop = window.scrollY;
       const docHeight = document.body.scrollHeight - window.innerHeight;
       const percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
       document.getElementById('progressBar').style.width = percent + '%';
 
-      // Tunjuk / sembunyi butang ke atas
       const topBtn = document.getElementById('topBtn');
       if (topBtn) {
         topBtn.style.display = scrollTop > 500 ? 'flex' : 'none';
